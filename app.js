@@ -1,3 +1,4 @@
+require("dotenv").config()
 const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
@@ -6,9 +7,9 @@ const app = express();
 
 var con = mysql.createConnection({
   host: "localhost",
-  user: "root",
-  password: "", /*Your Password */
-  database: "" /* Database Name */
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS, /*Your Password */
+  database: process.env.DB_NAME /* Database Name */
 });
 
 con.connect(function (err) {
@@ -18,26 +19,22 @@ con.connect(function (err) {
   console.log("Connected!");
 });
 
-var ask;
-
-
-con.query("SELECT name FROM customers WHERE address='Highway 37'", function (err, result, fields) {
+con.query("SELECT * FROM login", function (err, result) {
   if (err) throw err;
-  console.log(result);
-  ask = result[0].name;
+  if (result.length > 0) {
+    console.log(result[0].password);
+  } else {
+    console.log("No results");
+  }
 });
-
 
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get("/", function (req, res) {
-  // res.render("sign_up", {});
-
-  res.send("<h1>" + ask + "</h1>");
+  res.render("sign_up", {});
 });
-
 
 
 app.listen(3000, function () {
