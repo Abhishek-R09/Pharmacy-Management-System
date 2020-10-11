@@ -148,8 +148,3 @@ ADD CONSTRAINT `employee_fk_login_id`
   
 ALTER TABLE `pharmacy_management_system`.`drug_manufacturer` 
 ADD UNIQUE INDEX `contact_UNIQUE` (`contact` ASC) VISIBLE;
-
-ALTER TABLE `pharmacy_management_system`.`patient_1` ADD CHECK(`gender` IN ("Male", "Female", "Others"));
-
-
-
