@@ -168,3 +168,7 @@ ADD CONSTRAINT `employee_fk_username`
   FOREIGN KEY (`username`)
   REFERENCES `pharmacy_management_system`.`login` (`username`);
 
+-- Crazy genius Gato
+
+ALTER TABLE `pharmacy_management_system`.`bill_1` ADD CONSTRAINT
+CHECK (payment_mode IN ('Credit Card','Debit Card','Cash','Online'));

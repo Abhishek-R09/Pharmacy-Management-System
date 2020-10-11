@@ -108,6 +108,88 @@ VALUES (2,STR_TO_DATE('30,10,2027','%d,%m,%Y'),20,3);
 INSERT INTO `pharmacy_management_system`.`inventory`(`med_id`,`expiry_date`,`total_number`,`emp_id`)
 VALUES (9,STR_TO_DATE('24,11,2028','%d,%m,%Y'),50,1);
 
+-- crazy genius Gato
+
+-- inserting into bill_1
+INSERT INTO `pharmacy_management_system`.`bill_1`(`payment_mode`,`discount`,`pat_id`,`total_cost`)
+VALUES("Credit Card",10,1,103);
+INSERT INTO `pharmacy_management_system`.`bill_1`(`payment_mode`,`discount`,`pat_id`,`total_cost`)
+VALUES("Debit Card",0,2,1050);
+INSERT INTO `pharmacy_management_system`.`bill_1`(`payment_mode`,`discount`,`pat_id`,`total_cost`)
+VALUES("Credit Card",15,3,150);
+INSERT INTO `pharmacy_management_system`.`bill_1`(`payment_mode`,`discount`,`pat_id`,`total_cost`)
+VALUES("Cash",25,4,10000);
+INSERT INTO `pharmacy_management_system`.`bill_1`(`payment_mode`,`discount`,`pat_id`,`total_cost`)
+VALUES("Online",5,5,5000);
+INSERT INTO `pharmacy_management_system`.`bill_1`(`payment_mode`,`discount`,`pat_id`,`total_cost`)
+VALUES("Credit Card",12,6,600);
+INSERT INTO `pharmacy_management_system`.`bill_1`(`payment_mode`,`discount`,`pat_id`,`total_cost`)
+VALUES("Debit Card",15,7,200);
+INSERT INTO `pharmacy_management_system`.`bill_1`(`payment_mode`,`discount`,`pat_id`,`total_cost`)
+VALUES("Cash",25,8,9000);
+
+-- inserting into bill_2
+INSERT INTO `pharmacy_management_system`.`bill_2`(`bill_no`,`quantity`,`med_id`)
+VALUES(1,3,1);
+INSERT INTO `pharmacy_management_system`.`bill_2`(`bill_no`,`quantity`,`med_id`)
+VALUES(2,2,2);
+INSERT INTO `pharmacy_management_system`.`bill_2`(`bill_no`,`quantity`,`med_id`)
+VALUES(3,6,3);
+INSERT INTO `pharmacy_management_system`.`bill_2`(`bill_no`,`quantity`,`med_id`)
+VALUES(4,13,7);
+INSERT INTO `pharmacy_management_system`.`bill_2`(`bill_no`,`quantity`,`med_id`)
+VALUES(5,30,5);
+INSERT INTO `pharmacy_management_system`.`bill_2`(`bill_no`,`quantity`,`med_id`)
+VALUES(6,25,4);
+INSERT INTO `pharmacy_management_system`.`bill_2`(`bill_no`,`quantity`,`med_id`)
+VALUES(7,15,7);
+INSERT INTO `pharmacy_management_system`.`bill_2`(`bill_no`,`quantity`,`med_id`)
+VALUES(8,10,5);
+
+-- insterting into doctor_2
+INSERT INTO `pharmacy_management_system`.`doctor_2`(`doc_id`,`med_id`)
+VALUES(1,2);
+INSERT INTO `pharmacy_management_system`.`doctor_2`(`doc_id`,`med_id`)
+VALUES(1,3);
+INSERT INTO `pharmacy_management_system`.`doctor_2`(`doc_id`,`med_id`)
+VALUES(1,5);
+INSERT INTO `pharmacy_management_system`.`doctor_2`(`doc_id`,`med_id`)
+VALUES(2,5);
+INSERT INTO `pharmacy_management_system`.`doctor_2`(`doc_id`,`med_id`)
+VALUES(3,2);
+INSERT INTO `pharmacy_management_system`.`doctor_2`(`doc_id`,`med_id`)
+VALUES(4,2);
+INSERT INTO `pharmacy_management_system`.`doctor_2`(`doc_id`,`med_id`)
+VALUES(5,2);
+INSERT INTO `pharmacy_management_system`.`doctor_2`(`doc_id`,`med_id`)
+VALUES(4,4);
+INSERT INTO `pharmacy_management_system`.`doctor_2`(`doc_id`,`med_id`)
+VALUES(5,9);
+INSERT INTO `pharmacy_management_system`.`doctor_2`(`doc_id`,`med_id`)
+VALUES(2,11);
+
+-- inserting into patient_2
+INSERT INTO `pharmacy_management_system`.`patient_2`(`pat_id`,`doc_id`)
+VALUES(1,2);
+INSERT INTO `pharmacy_management_system`.`patient_2`(`pat_id`,`doc_id`)
+VALUES(2,3);
+INSERT INTO `pharmacy_management_system`.`patient_2`(`pat_id`,`doc_id`)
+VALUES(3,4);
+INSERT INTO `pharmacy_management_system`.`patient_2`(`pat_id`,`doc_id`)
+VALUES(4,1);
+INSERT INTO `pharmacy_management_system`.`patient_2`(`pat_id`,`doc_id`)
+VALUES(5,1);
+INSERT INTO `pharmacy_management_system`.`patient_2`(`pat_id`,`doc_id`)
+VALUES(6,5);
+INSERT INTO `pharmacy_management_system`.`patient_2`(`pat_id`,`doc_id`)
+VALUES(7,5);
+INSERT INTO `pharmacy_management_system`.`patient_2`(`pat_id`,`doc_id`)
+VALUES(8,5);
+INSERT INTO `pharmacy_management_system`.`patient_2`(`pat_id`,`doc_id`)
+VALUES(9,3);
+INSERT INTO `pharmacy_management_system`.`patient_2`(`pat_id`,`doc_id`)
+VALUES(10,1);
+
 
 
 
