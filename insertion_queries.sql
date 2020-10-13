@@ -91,8 +91,8 @@ INSERT INTO `pharmacy_management_system`.`medicine`(`med_name`,`mrp`,`primary_dr
 VALUES("Metformin","1118","Cinryze","10ml per month",3);
 INSERT INTO `pharmacy_management_system`.`medicine`(`med_name`,`mrp`,`primary_drug`,`dosage`,`company_id`)
 VALUES("Gilenya","917","Clindamycin","1 tablet per month",7);
-INSERT INTO `pharmacy_management_system`.`medicine`(`med_id`,`med_name`,`mrp`,`primary_drug`,`dosage`,`company_id`)
- VALUES(11,"Metkevenya","320","Juxinycin","4 tablet per week",2);
+INSERT INTO `pharmacy_management_system`.`medicine`(`med_name`,`mrp`,`primary_drug`,`dosage`,`company_id`)
+VALUES("Metkevenya","320","Juxinycin","4 tablet per week",2);
 
 -- inserting into inventory
 INSERT INTO `pharmacy_management_system`.`inventory`(`med_id`,`expiry_date`,`total_number`,`emp_id`)
