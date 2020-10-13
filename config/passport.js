@@ -28,7 +28,7 @@ module.exports = function (passport) {
     // used to deserialize the user
     passport.deserializeUser(function (id, done) {
         // connection.connect();
-        connection.query("SELECT * FROM login WHERE login_id = ? ", [id], function (err, rows) {
+        connection.query("SELECT * FROM login WHERE id = ? ", [id], function (err, rows) {
             done(err, rows[0]);
         });
         // connection.end();
@@ -65,10 +65,10 @@ module.exports = function (passport) {
                             password: bcrypt.hashSync(password, null, null)  // use the generateHash function in our user model
                         };
 
-                        var insertQuery = "INSERT INTO users ( username, password ) values (?,?)";
+                        var insertQuery = "INSERT INTO login ( username, password, role) values (?,?, 'Admin')";
                         // connection.connect();
                         connection.query(insertQuery, [newUserMysql.username, newUserMysql.password], function (err, rows) {
-                            newUserMysql = rows[0].insertId;
+                            newUserMysql.id = rows.insertId;
 
                             return done(null, newUserMysql);
                         });

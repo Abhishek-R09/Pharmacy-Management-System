@@ -172,3 +172,9 @@ ADD CONSTRAINT `employee_fk_username`
 
 ALTER TABLE `pharmacy_management_system`.`bill_1` ADD CONSTRAINT
 CHECK (payment_mode IN ('Credit Card','Debit Card','Cash','Online'));
+
+ALTER TABLE `pharmacy_management_system`.`login` 
+CHANGE COLUMN `password` `password` VARCHAR(200) NOT NULL ;
+
+ALTER TABLE `pharmacy_management_system`.`login` 
+CHANGE COLUMN `login_id` `id` INT NOT NULL AUTO_INCREMENT ;
