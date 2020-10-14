@@ -1,5 +1,5 @@
 // server.js
-require("dotenv").config()
+require("dotenv").config();
 // set up ======================================================================
 // get all the tools we need
 var express = require('express');

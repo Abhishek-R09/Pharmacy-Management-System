@@ -1,3 +1,10 @@
+// const { connection } = require("../config/database");
+var mysql = require('mysql');
+var dbconfig = require('../config/database');
+var connection = mysql.createConnection(dbconfig.connection);
+var bcrypt = require('bcrypt-nodejs');
+connection.query('USE ' + dbconfig.database);
+
 // app/routes.js
 module.exports = function (app, passport) {
 
@@ -61,6 +68,73 @@ module.exports = function (app, passport) {
 			user: req.user // get the user out of session and pass to template
 		});
 	});
+
+	app.get("/manageUsers", isLoggedIn, function(req, res){
+		var query1 = "SELECT employee.emp_id, employee.emp_name, employee.contact, employee.address, employee.username, login.role FROM employee INNER JOIN login ON employee.username=login.username ORDER BY employee.emp_id";
+		connection.query(
+			query1 ,function(err, rows){
+				res.render('manage_users.ejs', {user: req.user, rows: rows, message: ""});
+			});
+		// res.render('manage_users.ejs',{user: req.user});
+	});
+
+	app.post("/addUser", function(req,res){
+		var empName = req.body.emp_name;
+		var empContact = req.body.emp_contact;
+		var empDOB = req.body.emp_DOB;
+		var empAddress = req.body.emp_address;
+		var empUsername = req.body.emp_username;
+		var empPassword = bcrypt.hashSync(req.body.emp_pass, null, null);
+		var empRole = req.body.emp_role;
+		var queryToCheckUsername = "SELECT * FROM login WHERE username = ?";
+		connection.query(queryToCheckUsername,[empUsername], function(err, rows){
+			if (err){
+				console.log(err);
+			}else{
+				if (rows.length){
+					res.render('manage_users.ejs', {user: req.user, rows: rows, message: "Username already taken!"});
+				}else{
+					var queryToAddEmployee = "INSERT INTO employee (emp_name, contact, address, dob, username) VALUES (?, ?, ?, ?, ?)";
+					var queryToAddEmpCredentials = "INSERT INTO login (username, password, role) VALUES (?, ?, ?)";
+					connection.query(queryToAddEmpCredentials, [empUsername, empPassword, empRole], function(err, rows){
+						if (err) {
+							console.log(err);
+						}
+						console.log("Successfully entered login credentials of the employee");
+					});
+					connection.query(queryToAddEmployee, [empName, empContact, empAddress, empDOB, empUsername], function(err, rows){
+						if (err){
+							console.log(err);
+						}
+						console.log("Successfully inserted an employee");
+					});
+					res.redirect('/manageUsers');
+					
+				}
+			}
+		});
+
+	});
+
+	app.get("/createBill", isLoggedIn, function(req,res){
+		res.render('create_bill.ejs', {user: req.user});
+	});
+
+	app.get("/patients", isLoggedIn, function(req,res){
+		res.render('patient_details.ejs', {user: req.user});
+	});
+
+	app.get("/doctors", isLoggedIn, function(req, res){
+		res.render("doctor_details.ejs", {user: req.user});
+	});
+
+	app.get("/inventory", isLoggedIn, function(req, res){
+		res.render("inventory.ejs", {user: req.user});
+	});
+
+	// app.get("/inventory", isLoggedIn, function(req, res){
+	// 	res.render()
+	// });
 
 	// =====================================
 	// LOGOUT ==============================
