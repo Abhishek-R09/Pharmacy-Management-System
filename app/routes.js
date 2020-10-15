@@ -1,4 +1,5 @@
 // const { connection } = require("../config/database");
+/*jshint multistr: true */
 var mysql = require('mysql');
 var dbconfig = require('../config/database');
 var connection = mysql.createConnection(dbconfig.connection);
@@ -132,11 +133,21 @@ module.exports = function (app, passport) {
 	});
 
 	app.get("/doctors", isLoggedIn, function(req, res){
-		res.render("doctor_details.ejs", {user: req.user});
+		var query = "SELECT doc_name, contact, specialization FROM doctor_1";
+		connection.query(query,function(err, rows){
+			res.render('doctor_details.ejs', {user: req.user, rows: rows});
+		});
+		// res.render("doctor_details.ejs", {user: req.user});
 	});
 
 	app.get("/inventory", isLoggedIn, function(req, res){
-		res.render("inventory.ejs", {user: req.user});
+		var query = "SELECT medicine.med_name, medicine.mrp, medicine.primary_drug, drug_manufacturer.name \
+		FROM medicine \
+		INNER JOIN drug_manufacturer ON medicine.company_id=drug_manufacturer.company_id";
+		connection.query(query, function(err, rows){
+			res.render('inventory.ejs', {user: req.user, rows: rows});
+		});
+		// res.render("inventory.ejs", {user: req.user});
 	});
 
 	// app.get("/inventory", isLoggedIn, function(req, res){
