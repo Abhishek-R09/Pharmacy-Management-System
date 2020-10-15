@@ -121,7 +121,14 @@ module.exports = function (app, passport) {
 	});
 
 	app.get("/patients", isLoggedIn, function(req,res){
-		res.render('patient_details.ejs', {user: req.user});
+		var query1 = "SELECT patient_1.pat_name, patient_1.contact, patient_1.address, patient_1.gender, patient_1.age, doctor_1.doc_name \
+			FROM ((patient_1 INNER JOIN patient_2 ON patient_1.pat_id=patient_2.pat_id) \
+			INNER JOIN doctor_1 ON patient_2.doc_id=doctor_1.doc_id)";
+		connection.query(
+			query1 ,function(err, rows){
+				res.render('patient_details.ejs', {user: req.user, rows: rows, message: ""});
+			});
+		// res.render('patient_details.ejs', {user: req.user});
 	});
 
 	app.get("/doctors", isLoggedIn, function(req, res){
