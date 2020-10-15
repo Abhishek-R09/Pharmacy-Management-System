@@ -112,3 +112,15 @@ h2 {
 span {
   color: #fff;
 }
+
+button {
+  margin: 0 0 1rem;
+}
+
+.empRemoveCell {
+  display: none;
+}
+
+.empRemoveCol {
+  display: none;
+}

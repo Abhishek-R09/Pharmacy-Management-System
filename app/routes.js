@@ -21,6 +21,9 @@ module.exports = function (app, passport) {
 	// =====================================
 	// show the login form
 	app.get('/login', function (req, res) {
+		// if (isLoggedIn()){
+		// 	res.redirect('/home');
+		// }
 
 		// render the page and pass in any flash data if it exists
 		res.render('login.ejs', { message: req.flash('loginMessage') });
@@ -116,6 +119,27 @@ module.exports = function (app, passport) {
 		});
 
 	});
+
+	app.post("/deleteEmployee", function(req,res){
+		var empId = req.body.checkbox;
+		// console.log(empId);
+		var query1 = "SELECT employee.username FROM employee INNER JOIN login ON employee.username=login.username AND emp_id = ?";
+		
+		connection.query(query1, [empId] ,function(err,rows){
+			var empUsername=rows[0].username;
+			console.log(rows[0].username);
+			var queryToRemoveCred = "DELETE FROM login WHERE username = ?";
+			connection.query(queryToRemoveCred, [empUsername] ,function(err,rows){
+				if (err){
+					console.log(err);
+				}
+				console.log("1 row deleted");
+			});
+			res.redirect('/manageUsers');
+		});
+	});
+		// console.log(empUsername);
+		
 
 	app.get("/createBill", isLoggedIn, function(req,res){
 		res.render('create_bill.ejs', {user: req.user});
