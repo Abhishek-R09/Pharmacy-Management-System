@@ -71,14 +71,16 @@
       </nav>
 
       <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+        <div class="container-fluid">
+
         
         <h2>Employee details</h2>
-        <button class="btn btn-dark" onclick="removeEmployee()">Remove an Employee</button><br>
+        <button class="btn btn-dark" onclick="showHideRow('empRemove');">Remove an Employee</button><br>
         <div class="table-responsive">
           <table class="table table-striped table-bordered table-hover">
             <thead class="thead-dark">
               <tr>
-                <th class="empRemoveCol"></th>
+                <th class="empRemove" style="display: none;"></th>
                 <th>Employee ID</th>
                 <th>Name</th>
                 <th>Contact</th>
@@ -91,7 +93,7 @@
               <% rows.forEach(function(employee){ %>
 
               <tr>
-                <td class="empRemoveCell">
+                <td class="empRemove" style="display: none;">
                   <form action="/deleteEmployee" method="POST">
                     <input name="checkbox" value="<%= employee.emp_id %>" type="checkbox" onchange="this.form.submit()">
                   </form>
@@ -106,9 +108,12 @@
               <% }); %>
             </tbody>
           </table>
+
         </div>
-        <h2>Add an Employee</h2>
-        <div>
+      </div>
+        
+        <div class="container-fluid">
+          <h2>Add an Employee</h2>
           <form action="/addUser" method="POST">
             <div class="form-row">
               <div class="form-group col-md-4">
@@ -157,29 +162,9 @@
   </div>
 
 <script>
-  function removeEmployee(){
-    var eleColHead = document.getElementsByClassName('empRemoveCol');
-    var eleColCell = document.getElementsByClassName('empRemoveCell');
-    // console.log(eleColHead[0]);
-    // console.log(eleColCell[0]);
-    for (var i=0; i<eleColHead.length; ++i){
-      eleColHead[i].removeAttribute("class");
-    }
-    console.log(eleColCell.length);
-    var total=eleColCell.length;
-    // for (var i=0; i<total; i=i+1){
-      // console.log(eleColCell[i]);
-    i=0;
-    while(eleColCell){
-      eleColCell[i].removeAttribute("class");
-    }
-    // eleColHead.forEach(element => {
-    //   element.style.display="table-cell";
-    // });
-    // eleColCell.forEach(element=> {
-    //   element.removeAttribute("class");
-    // });
-  }
+  function showHideRow(row) { 
+        $("." + row).toggle(); 
+    } 
 </script>
 
   <%- include('partials/footer'); -%>

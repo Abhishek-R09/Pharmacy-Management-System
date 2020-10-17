@@ -1,6 +1,12 @@
   <%- include('partials/header'); -%>
   <title>Inventory | VIT Pharmacy</title>
-
+  <script type="text/javascript"> 
+    function showHideRow(row) { 
+        $("." + row).toggle('slow','swing');
+        // $("." + row).find("td").contents().slideToggle();
+        // $("." + row).slideToggle();
+    }
+  </script>
 </head>
 
 <body>
@@ -75,9 +81,10 @@
 
         <h2>Medicine List</h2>
         <div class="table-responsive">
-          <table class="table table-striped table-bordered table-hover">
+          <table class="table table-bordered table-hover">
             <thead class="thead-dark">
               <tr>
+                <th>Medicine ID</th>
                 <th>Medicine Name</th>
                 <th>MRP</th>
                 <th>Primary Drug</th>
@@ -85,14 +92,31 @@
               </tr>
             </thead>
             <tbody>
-              <% rows.forEach(function(stock){ %>
-                <tr>
-                  <td><%= stock.med_name %></td>
-                  <td>&#x20B9;<%= stock.mrp %></td>
-                  <td><%= stock.primary_drug %></td>
-                  <td><%= stock.name %></td>
-                  
+              <% rows.forEach(function(medicine){ %>
+                <tr class="" onclick="showHideRow('<%= medicine.med_id %>');">
+                  <td><%= medicine.med_id %></td>
+                  <td><%= medicine.med_name %></td>
+                  <td>&#x20B9;<%= medicine.mrp %></td>
+                  <td><%= medicine.primary_drug %></td>
+                  <td><%= medicine.name %></td>
                 </tr>
+                <tr class="thead-light table-active <%= medicine.med_id %>" style="display: none;">
+                  <td>Stock ID</td>
+                  <td colspan="3">Expiry Date</td>
+                  <td>Total Quantity</td>
+                </tr>
+                
+
+                <% for (var stock=0; stock < rows1.length; ++stock){ %>
+                  <% if (medicine.med_id===rows1[stock].med_id){ %>
+                      <tr class="table-info <%= medicine.med_id %>" style="display: none;">
+                        <td><%= rows1[stock].stock_id %></td>
+                        <td colspan="3"><%= rows1[stock].expiry_date %></td>
+                        <td ><%= rows1[stock].total_number %></td>
+                      </tr>
+                  <% }%>
+                    
+                <% } %>          
               <% }); %>
             </tbody>
           </table>
@@ -101,3 +125,4 @@
     </div>
   </div>
   <%- include('partials/footer'); -%>
+ 
