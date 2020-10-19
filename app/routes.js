@@ -151,7 +151,11 @@ module.exports = function (app, passport) {
 			INNER JOIN doctor_1 ON patient_2.doc_id=doctor_1.doc_id)";
 		connection.query(
 			query1 ,function(err, rows){
-				res.render('patient_details.ejs', {user: req.user, rows: rows, message: ""});
+				const query2 = "SELECT doc_id, doc_name FROM doctor_1";
+				connection.query(query2, function(err, rows2){
+					res.render('patient_details.ejs', {user: req.user, rows: rows, rows2:rows2, message: ""});
+				});
+
 			});
 		// res.render('patient_details.ejs', {user: req.user});
 	});

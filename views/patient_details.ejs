@@ -94,6 +94,14 @@
                 <label for="patientInsuranaceId">Insurance ID</label>
                 <input type="text" class="form-control" maxlength="20">
               </div>
+              <div class="form-group col-md-4">
+                <label for="patientDoctor">Doctor Name</label>
+                <select name="" id="patientDoctor" class="form-control">
+                  <% rows2.forEach(function(doctor){ %>
+                    <option value=""><%= doctor.doc_name %> (<%= doctor.doc_id %>)</option>
+                  <% }); %>
+                  </select>
+              </div>
             </div>
             
             <button type="submit" class="btn btn-primary">Add</button>
@@ -102,8 +110,15 @@
 
         <div class="container-fluid">
           <h2>Patient Details</h2>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <div class="input-group-text"><i class="fas fa-search"></i></div>
+            </div>
+            <input class="form-control" id="searchPatient" type="text" onkeyup="searchPatient()" placeholder="Search a patient">
+          </div>
+          <br>
           <div class="table-responsive">
-            <table class="table table-striped table-bordered table-hover">
+            <table class="table table-striped table-bordered table-hover" id="myTable">
               <thead class="thead-dark">
                 <tr>
                   <th>Name</th>
@@ -132,4 +147,24 @@
       </main>
     </div>
   </div>
+  <script>
+    function searchPatient() {
+      var input, filter, table, tr, td, i, txtValue;
+      input = document.getElementById("searchPatient");
+      filter = input.value.toUpperCase();
+      table = document.getElementById("myTable");
+      tr = table.getElementsByTagName("tr");
+      for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[0];
+        if (td) {
+          txtValue = td.textContent || td.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+          } else {
+            tr[i].style.display = "none";
+          }
+        }       
+      }
+    }
+    </script>
   <%- include('partials/footer'); -%>
