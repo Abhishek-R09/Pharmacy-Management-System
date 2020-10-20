@@ -74,7 +74,9 @@ module.exports = function (app, passport) {
 	});
 
 	app.get("/manageUsers", isLoggedIn, function(req, res){
-		var query1 = "SELECT employee.emp_id, employee.emp_name, employee.contact, employee.address, employee.username, login.role FROM employee INNER JOIN login ON employee.username=login.username ORDER BY employee.emp_id";
+		var query1 = "SELECT employee.emp_id, employee.emp_name, employee.contact, employee.address, \
+		employee.username, login.role FROM employee INNER JOIN login \
+		ON employee.username=login.username ORDER BY employee.emp_id";
 		connection.query(
 			query1 ,function(err, rows){
 				res.render('manage_users.ejs', {user: req.user, rows: rows, message: ""});
@@ -98,7 +100,8 @@ module.exports = function (app, passport) {
 				if (rows.length){
 					res.render('manage_users.ejs', {user: req.user, rows: rows, message: "Username already taken!"});
 				}else{
-					var queryToAddEmployee = "INSERT INTO employee (emp_name, contact, address, dob, username) VALUES (?, ?, ?, ?, ?)";
+					var queryToAddEmployee = "INSERT INTO employee (emp_name, contact, address, dob, username) \
+					VALUES (?, ?, ?, ?, ?)";
 					var queryToAddEmpCredentials = "INSERT INTO login (username, password, role) VALUES (?, ?, ?)";
 					connection.query(queryToAddEmpCredentials, [empUsername, empPassword, empRole], function(err, rows){
 						if (err) {
@@ -123,7 +126,9 @@ module.exports = function (app, passport) {
 	app.post("/deleteEmployee", function(req,res){
 		var empId = req.body.checkbox;
 		// console.log(empId);
-		var query1 = "SELECT employee.username FROM employee INNER JOIN login ON employee.username=login.username AND emp_id = ?";
+		var query1 = "SELECT employee.username \
+		FROM employee INNER JOIN login \
+		ON employee.username=login.username AND emp_id = ?";
 		
 		connection.query(query1, [empId] ,function(err,rows){
 			var empUsername=rows[0].username;
@@ -146,9 +151,11 @@ module.exports = function (app, passport) {
 	});
 
 	app.get("/patients", isLoggedIn, function(req,res){
-		var query1 = "SELECT patient_1.pat_name, patient_1.contact, patient_1.address, patient_1.gender, patient_1.age, doctor_1.doc_name \
+		var query1 = "SELECT patient_1.pat_id, patient_1.pat_name, patient_1.contact, patient_1.address, patient_1.gender, \
+			patient_1.age, doctor_1.doc_name \
 			FROM ((patient_1 INNER JOIN patient_2 ON patient_1.pat_id=patient_2.pat_id) \
-			INNER JOIN doctor_1 ON patient_2.doc_id=doctor_1.doc_id)";
+			INNER JOIN doctor_1 ON patient_2.doc_id=doctor_1.doc_id)\
+			ORDER BY patient_1.pat_id";
 		connection.query(
 			query1 ,function(err, rows){
 				const query2 = "SELECT doc_id, doc_name FROM doctor_1";
@@ -160,6 +167,30 @@ module.exports = function (app, passport) {
 		// res.render('patient_details.ejs', {user: req.user});
 	});
 
+	app.post("/addPatient", function(req,res){
+		var patName = req.body.patient_name;
+		var patContact = req.body.patient_contact;
+		var patAddress = req.body.patient_address;
+		var patGender = req.body.patient_gender;
+		var patAge = req.body.patient_age;
+		var patInsuranceId = req.body.patient_insurance_id;
+		var patDoc = req.body.patient_doctor;
+		var query = "INSERT INTO patient_1 (pat_name, contact, gender, insurance_id, age, address) VALUES \
+		(?,?,?,?,?,?)";
+		connection.query(query, [patName, patContact, patGender, patInsuranceId, patAge, patAddress], function(err, rows){
+			if (err) {
+				console.log(err);
+			}
+			var query2 = "INSERT INTO patient_2 VALUES (?,?)";
+			connection.query(query2, [rows.insertId, patDoc], function(err, rows2){
+				if (err) {
+					console.log(err);
+				}
+				res.redirect('/patients');
+			});
+		});
+	});
+
 	app.get("/doctors", isLoggedIn, function(req, res){
 		var query = "SELECT doc_name, contact, specialization FROM doctor_1";
 		connection.query(query,function(err, rows){
@@ -169,7 +200,8 @@ module.exports = function (app, passport) {
 	});
 
 	app.get("/inventory", isLoggedIn, function(req, res){
-		var query = "SELECT medicine.med_id, medicine.med_name, medicine.mrp, medicine.primary_drug, drug_manufacturer.name \
+		var query = "SELECT medicine.med_id, medicine.med_name, medicine.mrp, medicine.primary_drug, \
+		drug_manufacturer.name \
 		FROM medicine \
 		INNER JOIN drug_manufacturer ON medicine.company_id=drug_manufacturer.company_id ORDER BY medicine.med_id";
 		connection.query(query, function(err, rows){
