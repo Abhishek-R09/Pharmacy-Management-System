@@ -19,7 +19,6 @@ crossorigin="anonymous"></script>
       var port=window.location.port;
       var text = $(this).attr("href");
       var link = protocol+'//'+hostname+':'+port+text;
-      console.log(link);
       if (window.location.href===link) {
         $(this).addClass('active')
       }
