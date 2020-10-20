@@ -5,31 +5,7 @@
 </head>
 
 <body>
-  <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-    <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="/home">VIT Pharmacy</a>
-    <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse"
-      data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <span>
-      <strong>Login ID</strong>: <%= user.id %>
-    </span>
-    <span>
-      <strong>Username</strong>: <%= user.username %>
-    </span>
-    <!-- <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search"> -->
-    <ul class="navbar-nav px-3">
-      <li class="nav-item text-nowrap">
-        <a class="nav-link" href="/logout">Sign out</a>
-      </li>
-      <!-- <li class="nav-item text-nowrap">
-        
-      </li>
-      <li class="nav-item text-nowrap">
-        
-      </li> -->
-    </ul>
-  </nav>
+  <%- include('partials/navbar'); -%>
 
   <div class="container-fluid">
     <div class="row">
@@ -38,37 +14,43 @@
           <ul class="nav flex-column">
             <li class="nav-item">
               <a class="nav-link active" href="/home">
-                <span data-feather="bar-chart-2"></span>
+                <!-- <span data-feather="bar-chart-2"></span> -->
+                <i class="fas fa-chart-pie"></i>
                 Dashboard <span class="sr-only">(current)</span>
               </a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/manageUsers">
-                <span data-feather="users"></span>
+                <!-- <span data-feather="users"></span> -->
+                <i class="fas fa-user-check"></i>
                 Manage Users
               </a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/createBill">
-                <span data-feather="shopping-cart"></span>
+                <!-- <span data-feather="shopping-cart"></span> -->
+                <i class="fas fa-wallet"></i>
                 Generate bill
               </a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/patients">
-                <span data-feather="users"></span>
+                <!-- <span data-feather="users"></span> -->
+                <i class="fas fa-users"></i>
                 Patient
               </a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/doctors">
-                <span data-feather="users"></span>
+                <!-- <span data-feather="users"></span> -->
+                <i class="fas fa-user-md"></i>
                 Doctors
               </a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/inventory">
-                <span data-feather="file"></span>
+                <!-- <span data-feather="file"></span> -->
+                <i class="fas fa-warehouse"></i>
                 Inventory
               </a>
             </li>

@@ -21,6 +21,9 @@ module.exports = function (app, passport) {
 	// =====================================
 	// show the login form
 	app.get('/login', function (req, res) {
+		// if (isLoggedIn()){
+		// 	res.redirect('/home');
+		// }
 
 		// render the page and pass in any flash data if it exists
 		res.render('login.ejs', { message: req.flash('loginMessage') });
@@ -117,6 +120,27 @@ module.exports = function (app, passport) {
 
 	});
 
+	app.post("/deleteEmployee", function(req,res){
+		var empId = req.body.checkbox;
+		// console.log(empId);
+		var query1 = "SELECT employee.username FROM employee INNER JOIN login ON employee.username=login.username AND emp_id = ?";
+		
+		connection.query(query1, [empId] ,function(err,rows){
+			var empUsername=rows[0].username;
+			console.log(rows[0].username);
+			var queryToRemoveCred = "DELETE FROM login WHERE username = ?";
+			connection.query(queryToRemoveCred, [empUsername] ,function(err,rows){
+				if (err){
+					console.log(err);
+				}
+				console.log("1 row deleted");
+			});
+			res.redirect('/manageUsers');
+		});
+	});
+		// console.log(empUsername);
+		
+
 	app.get("/createBill", isLoggedIn, function(req,res){
 		res.render('create_bill.ejs', {user: req.user});
 	});
@@ -127,7 +151,11 @@ module.exports = function (app, passport) {
 			INNER JOIN doctor_1 ON patient_2.doc_id=doctor_1.doc_id)";
 		connection.query(
 			query1 ,function(err, rows){
-				res.render('patient_details.ejs', {user: req.user, rows: rows, message: ""});
+				const query2 = "SELECT doc_id, doc_name FROM doctor_1";
+				connection.query(query2, function(err, rows2){
+					res.render('patient_details.ejs', {user: req.user, rows: rows, rows2:rows2, message: ""});
+				});
+
 			});
 		// res.render('patient_details.ejs', {user: req.user});
 	});
@@ -141,11 +169,17 @@ module.exports = function (app, passport) {
 	});
 
 	app.get("/inventory", isLoggedIn, function(req, res){
-		var query = "SELECT medicine.med_name, medicine.mrp, medicine.primary_drug, drug_manufacturer.name \
+		var query = "SELECT medicine.med_id, medicine.med_name, medicine.mrp, medicine.primary_drug, drug_manufacturer.name \
 		FROM medicine \
-		INNER JOIN drug_manufacturer ON medicine.company_id=drug_manufacturer.company_id";
+		INNER JOIN drug_manufacturer ON medicine.company_id=drug_manufacturer.company_id ORDER BY medicine.med_id";
 		connection.query(query, function(err, rows){
-			res.render('inventory.ejs', {user: req.user, rows: rows});
+			var query1 = "select inventory.stock_id, medicine.med_id, inventory.expiry_date, inventory.total_number\
+			from inventory INNER JOIN \
+			medicine ON inventory.med_id=medicine.med_id ORDER BY medicine.med_id;";
+			connection.query(query1, function(err, rows1){
+				res.render('inventory.ejs', {user: req.user, rows: rows, rows1: rows1});
+			});
+			// res.render('inventory.ejs', {user: req.user, rows: rows});
 		});
 		// res.render("inventory.ejs", {user: req.user});
 	});

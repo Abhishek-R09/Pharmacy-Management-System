@@ -1,27 +1,17 @@
   <%- include('partials/header'); -%>
   <title>Inventory | VIT Pharmacy</title>
-
+  <script type="text/javascript"> 
+    function showHideRow(row) { 
+        // $("." + row).toggle('slow','swing');
+        $("." + row).toggle('slow','swing');
+        // $("." + row).find("td").contents().slideToggle();
+        // $("." + row).slideToggle();
+    }
+  </script>
 </head>
 
 <body>
-  <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-    <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="/home">VIT Pharmacy</a>
-    <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse"
-      data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <span>
-      <strong>Login ID</strong>: <%= user.id %>
-    </span>
-    <span>
-      <strong>Username</strong>: <%= user.username %>
-    </span>
-    <ul class="navbar-nav px-3">
-      <li class="nav-item text-nowrap">
-        <a class="nav-link" href="/logout">Sign out</a>
-      </li>
-    </ul>
-  </nav>
+  <%- include('partials/navbar'); -%>
 
   <div class="container-fluid">
     <div class="row">
@@ -30,37 +20,43 @@
           <ul class="nav flex-column">
             <li class="nav-item">
               <a class="nav-link" href="/home">
-                <span data-feather="bar-chart-2"></span>
+                <!-- <span data-feather="bar-chart-2"></span> -->
+                <i class="fas fa-chart-pie"></i>
                 Dashboard 
               </a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/manageUsers">
-                <span data-feather="users"></span>
+                <!-- <span data-feather="users"></span> -->
+                <i class="fas fa-user-check"></i>
                 Manage Users
               </a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/createBill">
-                <span data-feather="shopping-cart"></span>
+                <!-- <span data-feather="shopping-cart"></span> -->
+                <i class="fas fa-wallet"></i>
                 Generate bill
               </a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/patients">
-                <span data-feather="users"></span>
+                <!-- <span data-feather="users"></span> -->
+                <i class="fas fa-users"></i>
                 Patient
               </a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/doctors">
-                <span data-feather="users"></span>
-                Doctors
+                <!-- <span data-feather="users"></span> -->
+                <i class="fas fa-user-md"></i>
+                Doctors                
               </a>
             </li>
             <li class="nav-item">
               <a class="nav-link active" href="/inventory">
-                <span data-feather="file"></span>
+                <!-- <span data-feather="file"></span> -->
+                <i class="fas fa-warehouse"></i>
                 Inventory<span class="sr-only">(current)</span>
               </a>
             </li>
@@ -72,9 +68,10 @@
 
         <h2>Medicine List</h2>
         <div class="table-responsive">
-          <table class="table table-striped table-bordered table-hover">
+          <table class="table table-bordered table-hover">
             <thead class="thead-dark">
               <tr>
+                <th>Medicine ID</th>
                 <th>Medicine Name</th>
                 <th>MRP</th>
                 <th>Primary Drug</th>
@@ -82,14 +79,31 @@
               </tr>
             </thead>
             <tbody>
-              <% rows.forEach(function(stock){ %>
+              <% rows.forEach(function(medicine){ %>
                 <tr>
-                  <td><%= stock.med_name %></td>
-                  <td>&#x20B9;<%= stock.mrp %></td>
-                  <td><%= stock.primary_drug %></td>
-                  <td><%= stock.name %></td>
-                  
+                  <td style="cursor: pointer;" class="" onclick="showHideRow('<%= medicine.med_id %>');"><i class="fas fa-caret-down"></i>&emsp;<%= medicine.med_id %></td>
+                  <td><%= medicine.med_name %></td>
+                  <td>&#x20B9;<%= medicine.mrp %></td>
+                  <td><%= medicine.primary_drug %></td>
+                  <td><%= medicine.name %></td>
                 </tr>
+                <tr class="thead-light table-active <%= medicine.med_id %>" style="display: none;">
+                  <td>Stock ID</td>
+                  <td colspan="3">Expiry Date</td>
+                  <td>Total Quantity</td>
+                </tr>
+                
+
+                <% for (var stock=0; stock < rows1.length; ++stock){ %>
+                  <% if (medicine.med_id===rows1[stock].med_id){ %>
+                      <tr class="table-info <%= medicine.med_id %>" style="display: none;">
+                        <td><%= rows1[stock].stock_id %></td>
+                        <td colspan="3"><%= rows1[stock].expiry_date %></td>
+                        <td ><%= rows1[stock].total_number %></td>
+                      </tr>
+                  <% }%>
+                    
+                <% } %>          
               <% }); %>
             </tbody>
           </table>
@@ -98,3 +112,4 @@
     </div>
   </div>
   <%- include('partials/footer'); -%>
+ 
