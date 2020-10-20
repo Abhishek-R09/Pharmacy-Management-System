@@ -11,7 +11,20 @@ crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.9.0/feather.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
 <script src="dashboard.js"></script>
-
+<script>
+    $('ul.nav.flex-column li').find('a').each(function() {
+      var href = window.location.href;
+      var hostname = window.location.hostname;
+      var protocol = window.location.protocol;
+      var port=window.location.port;
+      var text = $(this).attr("href");
+      var link = protocol+'//'+hostname+':'+port+text;
+      console.log(link);
+      if (window.location.href===link) {
+        $(this).addClass('active')
+      }
+  });
+  </script>
 </body>
 
 </html>
