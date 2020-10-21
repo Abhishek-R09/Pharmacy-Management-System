@@ -10,153 +10,203 @@
     <div class="row">
       <%- include('partials/sidebar'); -%>
       <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-        <div
-          class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-          <h1 class="h2">Dashboard</h1>
-          <div class="btn-toolbar mb-2 mb-md-0">
-            <div class="btn-group mr-2">
-              <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
-              <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+        
+        <div class="container-fluid">
+          <h2>New Bill</h2>
+          <a href="#medicineList" class="btn btn-link sliding-link" >Click here to check medicines list</a>
+          <br><br>
+          <form action="\generateBill" method="POST" onchange="calcFinalBill();">
+            <div class="table-responsive">
+              <table class="table table-striped table-bordered" id="billTable" style="empty-cells: hide;">
+                <thead class="thead-dark">
+                  <tr>
+                    <th>Sr. No.</th>
+                    <th>Medicine Name</th>
+                    <th>MRP (in &#x20B9;)</th>
+                    <th>Quantity</th>
+                    <th>Expiry Date</th>
+                    <th>Total</th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  <% for (var i=0;i<10;++i){ %>
+                    <tr>
+                      <td>
+                        <%= i %>
+                      </td>
+                      <td>
+                        <input id="medName<%= i %>" class="form-control" type="text" oninput="addOtherFields('<%= i %>');">
+                        
+                      </td>
+                      <td>
+                        <input id="medMRP<%= i %>" class="form-control" type="number" readonly step="0.1">
+                      </td>
+                      <td>
+                        <input id="medQuantity<%= i %>" type="number" class="form-control" name="" min="0" onchange="calcTotal('<%= i %>');">
+                      </td>
+                      <td>
+                        <input id="medExpiry<%= i %>" type="date" class="form-control" readonly>
+                      </td>
+                      <td>
+                        <input id="medTotal<%= i %>" type="number" class="form-control" readonly step="0.1">
+                      </td>
+                    </tr>
+                    <script type="text/javascript">
+                      
+                    </script>
+                  <% } %>
+                </tbody>
+                <tfoot>
+                  <tr class="">
+                    <td colspan="5" style="text-align: right;">Total</td>
+                    <td >
+                      <input id="totalBillAmt" min="0" type="number" step="0.1" readonly class="form-control" value="0">
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
             </div>
-            <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
-              <span data-feather="calendar"></span>
-              This week
-            </button>
+          </form>
+        </div>
+        <div class="container-fluid" id="medicineList">
+        
+          <h2 >Medicine List</h2>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <div class="input-group-text"><i class="fas fa-search"></i></div>
+            </div>
+            <input class="form-control" id="searchMedicine" type="text" onkeyup="searchMedicine()" placeholder="Search a medicine">
           </div>
-        </div>
-
-        <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>
-
-        <h2>Section title</h2>
-        <div class="table-responsive">
-          <table class="table table-striped table-sm">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Header</th>
-                <th>Header</th>
-                <th>Header</th>
-                <th>Header</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>1,001</td>
-                <td>Lorem</td>
-                <td>ipsum</td>
-                <td>dolor</td>
-                <td>sit</td>
-              </tr>
-              <tr>
-                <td>1,002</td>
-                <td>amet</td>
-                <td>consectetur</td>
-                <td>adipiscing</td>
-                <td>elit</td>
-              </tr>
-              <tr>
-                <td>1,003</td>
-                <td>Integer</td>
-                <td>nec</td>
-                <td>odio</td>
-                <td>Praesent</td>
-              </tr>
-              <tr>
-                <td>1,003</td>
-                <td>libero</td>
-                <td>Sed</td>
-                <td>cursus</td>
-                <td>ante</td>
-              </tr>
-              <tr>
-                <td>1,004</td>
-                <td>dapibus</td>
-                <td>diam</td>
-                <td>Sed</td>
-                <td>nisi</td>
-              </tr>
-              <tr>
-                <td>1,005</td>
-                <td>Nulla</td>
-                <td>quis</td>
-                <td>sem</td>
-                <td>at</td>
-              </tr>
-              <tr>
-                <td>1,006</td>
-                <td>nibh</td>
-                <td>elementum</td>
-                <td>imperdiet</td>
-                <td>Duis</td>
-              </tr>
-              <tr>
-                <td>1,007</td>
-                <td>sagittis</td>
-                <td>ipsum</td>
-                <td>Praesent</td>
-                <td>mauris</td>
-              </tr>
-              <tr>
-                <td>1,008</td>
-                <td>Fusce</td>
-                <td>nec</td>
-                <td>tellus</td>
-                <td>sed</td>
-              </tr>
-              <tr>
-                <td>1,009</td>
-                <td>augue</td>
-                <td>semper</td>
-                <td>porta</td>
-                <td>Mauris</td>
-              </tr>
-              <tr>
-                <td>1,010</td>
-                <td>massa</td>
-                <td>Vestibulum</td>
-                <td>lacinia</td>
-                <td>arcu</td>
-              </tr>
-              <tr>
-                <td>1,011</td>
-                <td>eget</td>
-                <td>nulla</td>
-                <td>Class</td>
-                <td>aptent</td>
-              </tr>
-              <tr>
-                <td>1,012</td>
-                <td>taciti</td>
-                <td>sociosqu</td>
-                <td>ad</td>
-                <td>litora</td>
-              </tr>
-              <tr>
-                <td>1,013</td>
-                <td>torquent</td>
-                <td>per</td>
-                <td>conubia</td>
-                <td>nostra</td>
-              </tr>
-              <tr>
-                <td>1,014</td>
-                <td>per</td>
-                <td>inceptos</td>
-                <td>himenaeos</td>
-                <td>Curabitur</td>
-              </tr>
-              <tr>
-                <td>1,015</td>
-                <td>sodales</td>
-                <td>ligula</td>
-                <td>in</td>
-                <td>libero</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+          <br>
+          <div class="table-responsive">
+            <table class="table table-bordered table-hover" id="myTable">
+              <thead class="thead-dark">
+                <tr>
+                  <th></th>
+                  <th>Medicine ID</th>
+                  <th>Stock ID</th>
+                  <th>Medicine Name</th>
+                  <th>MRP</th>
+                  <th>Company Name</th>
+                  <th>Expiry Date</th>
+                  <th>Available Stock</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% rows.forEach(function(medicine){ %>
+                  <tr id="<%= medicine.med_id %>">
+                    <td><button class="btn btn-dark btn-sm"><i class="fas fa-plus"></i></button></td>
+                    <td id="" ><%= medicine.med_id %></td>
+                    <td><%= medicine.stock_id %></td>
+                    <td>
+                      <%= medicine.med_name %>
+                      <button onclick="myFunction('<%= medicine.med_name %>')" style="float: right;" class="btn btn-dark btn-sm"><i class="fas fa-copy"></i></button>
+                    </td>
+                    <td>&#x20B9;<%= medicine.mrp %></td>
+                    <td><%= medicine.name %></td>
+                    <td><%= medicine.expiry_date %></td>
+                    <td><%= medicine.total_number %></td>
+                  </tr>        
+                <% }); %>
+              </tbody>
+            </table>
+          </div>
+      </div>
       </main>
     </div>
   </div>
-  
+  <script>
+    var reqMRP;
+    function searchMedicine() {
+      var input, filter, table, tr, td, i, txtValue;
+      input = document.getElementById("searchMedicine");
+      filter = input.value.toUpperCase();
+      table = document.getElementById("myTable");
+      tr = table.getElementsByTagName("tr");
+      for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[2];
+        if (td) {
+          txtValue = td.textContent || td.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+          } else {
+            tr[i].style.display = "none";
+          }
+        }       
+      }
+    }
+    function myFunction(element) {
+      // console.log(element);
+      var textField = document.createElement('textarea');
+      textField.innerText = element;
+      document.body.appendChild(textField);
+      textField.select();
+      document.execCommand("copy");
+      textField.remove();
+      alert("Copied Medicine Name: " + element);
+    }
+    function addOtherFields(billIdx){
+      var input, filter, table, tr, td, i, txtValue, reqRow, reqExpiry, reqExpiry1;
+      input = document.getElementById("medName"+billIdx);
+      // console.log(input.value);
+      filter = input.value.toUpperCase();
+      // console.log(filter);
+      tableRef = document.getElementById("myTable");
+      tr = tableRef.getElementsByTagName("tr");
+      for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[2];
+        if (td) {
+          txtValue = td.textContent || td.innerText;
+          // console.log(txtValue);
+          // console.log(txtValue.toUpperCase().indexOf(filter));
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            // if (txtValue===input.value) {
+            // tr[i].style.display = "";
+            reqRow = tr[i];
+            reqMRP = reqRow.getElementsByTagName("td")[3].innerText.substring(1,);
+            reqExpiry = reqRow.getElementsByTagName("td")[5].innerText;
+            
+            reqExpiry1 = reqExpiry.substring(6,10) + '-' + reqExpiry.substring(0,2) + '-' + reqExpiry.substring(3,5);
+            document.getElementById('medMRP'+billIdx).value = reqMRP;
+            document.getElementById('medExpiry'+billIdx).value = reqExpiry1;
+            document.getElementById('medQuantity'+billIdx).value = 0;
+            // console.log(reqRow);
+            // console.log(reqMRP);
+            // console.log(reqExpiry);
+            // console.log(reqExpiry1);
+          } else {
+            // tr[i].style.display = "none";
+            
+          }
+        }       
+      }
+    }
+    function calcTotal(billIdx){
+      var reqQuantity;
+      reqQuantity = document.getElementById('medQuantity'+billIdx).value;
+      document.getElementById('medTotal'+billIdx).value = reqMRP*reqQuantity;
+    }
+    function calcFinalBill(){
+      document.getElementById('totalBillAmt').value = Number(0);
+      for (let index = 0; index < 10; index++) {
+        const medCost = Number(document.getElementById('medTotal'+index).value);
+        console.log(medCost);
+        if (!medCost) {
+          console.log("Not a number");
+          continue;
+        } else{
+          var curr = Number(document.getElementById('totalBillAmt').value);
+          curr = curr + Number(medCost);
+          document.getElementById('totalBillAmt').value = curr;
+        }
+      }
+    }
+    $(".sliding-link").click(function(e) {
+      e.preventDefault();
+      var aid = $(this).attr("href");
+      $('html,body').animate({scrollTop: $(aid).offset().top},'slow');
+    });
+    
+    </script>
   <%- include('partials/footer'); -%>
