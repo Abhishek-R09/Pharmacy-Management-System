@@ -24,6 +24,13 @@ crossorigin="anonymous"></script>
       }
   });
   </script>
+    <script>
+      $(document).ready(function() {
+         function disablePrev() { window.history.forward() }
+         window.onload = disablePrev();
+         window.onpageshow = function(evt) { if (evt.persisted) disableBack() }
+      });
+   </script>
 </body>
 
 </html>
