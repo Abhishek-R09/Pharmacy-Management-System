@@ -147,9 +147,19 @@ module.exports = function (app, passport) {
 		
 
 	app.get("/createBill", isLoggedIn, function(req,res){
-		res.render('create_bill.ejs', {user: req.user});
+		var query1 = "SELECT medicine.med_id, medicine.med_name, medicine.mrp, inventory.stock_id, \
+		DATE_FORMAT(inventory.expiry_date,\'%m-%d-%Y\') AS expiry_date, \
+		inventory.total_number, drug_manufacturer.name FROM \
+		((medicine INNER JOIN inventory ON medicine.med_id=inventory.med_id) INNER JOIN \
+		drug_manufacturer ON medicine.company_id=drug_manufacturer.company_id) ORDER BY medicine.med_id";
+		connection.query(query1, function(err,rows){
+				// res.render('create_bill.ejs', {user: req.user, rows: rows, rows1: rows1});
+			console.log(rows);
+			res.render('create_bill.ejs', {user: req.user, rows:rows});
+		});
+		// res.render('create_bill.ejs', {user: req.user});
 	});
-
+	
 	app.get("/patients", isLoggedIn, function(req,res){
 		var query1 = "SELECT patient_1.pat_id, patient_1.pat_name, patient_1.contact, patient_1.address, patient_1.gender, \
 			patient_1.age, doctor_1.doc_name \
@@ -205,7 +215,8 @@ module.exports = function (app, passport) {
 		FROM medicine \
 		INNER JOIN drug_manufacturer ON medicine.company_id=drug_manufacturer.company_id ORDER BY medicine.med_id";
 		connection.query(query, function(err, rows){
-			var query1 = "select inventory.stock_id, medicine.med_id, inventory.expiry_date, inventory.total_number\
+			var query1 = "select inventory.stock_id, medicine.med_id, DATE_FORMAT(inventory.expiry_date,\'%m-%d-%Y\') AS expiry_date, \
+			inventory.total_number\
 			from inventory INNER JOIN \
 			medicine ON inventory.med_id=medicine.med_id ORDER BY medicine.med_id;";
 			connection.query(query1, function(err, rows1){
