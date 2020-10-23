@@ -174,6 +174,62 @@ module.exports = function (app, passport) {
 		});
 		// res.render('create_bill.ejs', {user: req.user});
 	});
+
+	app.post('/generateBill', function(req, res){
+		var patientId = req.body.patId;
+		var billDate = req.body.billDate;
+		var paymentMode = req.body.paymentMode;
+		var discount = req.body.discount;
+		var finalCost = req.body.finalTotalCost;
+		var medIds = [];
+		var medQuantity = [];
+		var medStockIds = [];
+		var i=0;
+		while(req.body['medId'+i]){
+			// var idNo = 'medId'+i;
+			medIds.push(req.body['medId'+i]);
+			medQuantity.push(req.body['medQuantity'+i]);
+			medStockIds.push(req.body['medStockId'+i]);
+			++i;
+		}
+		console.log(medIds);
+		console.log(medQuantity);
+		console.log(medStockIds);
+		console.log(patientId);
+		console.log(billDate);
+		console.log(paymentMode);
+		console.log(discount);
+		console.log(finalCost);
+		var query1 = "INSERT INTO bill_1 (payment_mode, discount, pat_id, total_cost, bill_date)\
+		VALUES (?,?,?,?,?)";
+		var billNo;
+		connection.query(query1, [paymentMode, discount, patientId, finalCost, billDate], function(err, rows){
+			if (err) {
+				console.log(err);
+			}
+			billNo = rows.insertId;
+			var query2 = "INSERT INTO bill_2 (bill_no, quantity, med_id) VALUES \
+			(?,?,?)";
+			for (let index = 0; index < medIds.length; index++) {
+				connection.query(query2, [billNo, medQuantity[index], medIds[index]], function(err,rows2){
+					if (err) {
+						console.log(err);
+					}
+					console.log("Number of records inserted: " + rows2.affectedRows);
+				});
+			}
+		});
+		for (var i=0; i<medIds.length; ++i){
+			var query3 = "UPDATE inventory SET total_number=total_number - ? WHERE stock_id = ?";
+			connection.query(query3, [medQuantity[i], medStockIds[i]], function(err, rows3){
+				if (err) {
+					console.log(err);
+				}
+				console.log('Rows affected:', rows3.affectedRows);
+			});
+		}
+		res.redirect('/createBill');
+	});
 	
 	app.get("/patients", isLoggedIn, function(req,res){
 		var query1 = "SELECT patient_1.pat_id, patient_1.pat_name, patient_1.contact, patient_1.address, patient_1.gender, \
