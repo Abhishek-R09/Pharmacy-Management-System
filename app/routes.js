@@ -147,6 +147,13 @@ module.exports = function (app, passport) {
 		
 
 	app.get("/createBill", isLoggedIn, function(req,res){
+		var today = new Date();
+		var dd = String(today.getDate()).padStart(2, '0');
+		var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+		var yyyy = today.getFullYear();
+
+		today = yyyy+ '-' + mm + '-' + dd;
+		// document.write(today);
 		var query1 = "SELECT medicine.med_id, medicine.med_name, medicine.mrp, inventory.stock_id, \
 		DATE_FORMAT(inventory.expiry_date,\'%m-%d-%Y\') AS expiry_date, \
 		inventory.total_number, drug_manufacturer.name FROM \
@@ -154,10 +161,74 @@ module.exports = function (app, passport) {
 		drug_manufacturer ON medicine.company_id=drug_manufacturer.company_id) ORDER BY medicine.med_id";
 		connection.query(query1, function(err,rows){
 				// res.render('create_bill.ejs', {user: req.user, rows: rows, rows1: rows1});
-			console.log(rows);
-			res.render('create_bill.ejs', {user: req.user, rows:rows});
+			// console.log(rows)
+			var query2 = "SELECT patient_1.pat_id, patient_1.pat_name, patient_1.age, doctor_1.doc_name FROM \
+			((patient_1 INNER JOIN patient_2 ON patient_1.pat_id = patient_2.pat_id) \
+			INNER JOIN doctor_1 ON patient_2.doc_id=doctor_1.doc_id) ORDER BY patient_1.pat_id";
+			connection.query(query2, function(err,rows2){
+				connection.query("SELECT MAX(bill_no) AS bill_no FROM bill_1", function(err, bills){
+					res.render('create_bill.ejs', {user: req.user, rows:rows, rows2: rows2, today:today, bills: bills});
+				});
+
+			});
 		});
 		// res.render('create_bill.ejs', {user: req.user});
+	});
+
+	app.post('/generateBill', function(req, res){
+		var patientId = req.body.patId;
+		var billDate = req.body.billDate;
+		var paymentMode = req.body.paymentMode;
+		var discount = req.body.discount;
+		var finalCost = req.body.finalTotalCost;
+		var medIds = [];
+		var medQuantity = [];
+		var medStockIds = [];
+		var i=0;
+		while(req.body['medId'+i]){
+			// var idNo = 'medId'+i;
+			medIds.push(req.body['medId'+i]);
+			medQuantity.push(req.body['medQuantity'+i]);
+			medStockIds.push(req.body['medStockId'+i]);
+			++i;
+		}
+		console.log(medIds);
+		console.log(medQuantity);
+		console.log(medStockIds);
+		console.log(patientId);
+		console.log(billDate);
+		console.log(paymentMode);
+		console.log(discount);
+		console.log(finalCost);
+		var query1 = "INSERT INTO bill_1 (payment_mode, discount, pat_id, total_cost, bill_date)\
+		VALUES (?,?,?,?,?)";
+		var billNo;
+		connection.query(query1, [paymentMode, discount, patientId, finalCost, billDate], function(err, rows){
+			if (err) {
+				console.log(err);
+			}
+			billNo = rows.insertId;
+			var query2 = "INSERT INTO bill_2 (bill_no, quantity, med_id) VALUES \
+			(?,?,?)";
+			for (let index = 0; index < medIds.length; index++) {
+				connection.query(query2, [billNo, medQuantity[index], medIds[index]], function(err,rows2){
+					if (err) {
+						console.log(err);
+					}
+					console.log("Number of records inserted: " + rows2.affectedRows);
+				});
+			}
+		});
+		for (var i=0; i<medIds.length; ++i){
+			var query3 = "UPDATE inventory SET total_number=total_number - ? WHERE stock_id = ?";
+			connection.query(query3, [medQuantity[i], medStockIds[i]], function(err, rows3){
+				if (err) {
+					console.log(err);
+				}
+				console.log('Rows affected:', rows3.affectedRows);
+			});
+		}
+		res.redirect('/createBill');
 	});
 	
 	app.get("/patients", isLoggedIn, function(req,res){
