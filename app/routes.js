@@ -147,6 +147,13 @@ module.exports = function (app, passport) {
 		
 
 	app.get("/createBill", isLoggedIn, function(req,res){
+		var today = new Date();
+		var dd = String(today.getDate()).padStart(2, '0');
+		var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+		var yyyy = today.getFullYear();
+
+		today = yyyy+ '-' + mm + '-' + dd;
+		// document.write(today);
 		var query1 = "SELECT medicine.med_id, medicine.med_name, medicine.mrp, inventory.stock_id, \
 		DATE_FORMAT(inventory.expiry_date,\'%m-%d-%Y\') AS expiry_date, \
 		inventory.total_number, drug_manufacturer.name FROM \
@@ -154,8 +161,16 @@ module.exports = function (app, passport) {
 		drug_manufacturer ON medicine.company_id=drug_manufacturer.company_id) ORDER BY medicine.med_id";
 		connection.query(query1, function(err,rows){
 				// res.render('create_bill.ejs', {user: req.user, rows: rows, rows1: rows1});
-			console.log(rows);
-			res.render('create_bill.ejs', {user: req.user, rows:rows});
+			// console.log(rows)
+			var query2 = "SELECT patient_1.pat_id, patient_1.pat_name, patient_1.age, doctor_1.doc_name FROM \
+			((patient_1 INNER JOIN patient_2 ON patient_1.pat_id = patient_2.pat_id) \
+			INNER JOIN doctor_1 ON patient_2.doc_id=doctor_1.doc_id) ORDER BY patient_1.pat_id";
+			connection.query(query2, function(err,rows2){
+				connection.query("SELECT MAX(bill_no) AS bill_no FROM bill_1", function(err, bills){
+					res.render('create_bill.ejs', {user: req.user, rows:rows, rows2: rows2, today:today, bills: bills});
+				});
+
+			});
 		});
 		// res.render('create_bill.ejs', {user: req.user});
 	});

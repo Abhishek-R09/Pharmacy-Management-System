@@ -62,7 +62,7 @@ function calcTotal(billIdx){
   }
 
 }
-function calcFinalBill(){
+function calcBill(){
   document.getElementById('totalBillAmt').value = Number(0);
   var billTable = document.getElementById('billTable').getElementsByTagName('tbody')[0];
   var numRow = billTable.getElementsByTagName("tr").length;
@@ -76,9 +76,17 @@ function calcFinalBill(){
       var curr = Number(document.getElementById('totalBillAmt').value);
       curr = curr + Number(medCost);
       document.getElementById('totalBillAmt').value = curr;
+      document.getElementById('discount').max = curr;
     }
   }
 }
+
+function calcFinalBill(){
+  var actualTotal = document.getElementById('totalBillAmt').value;
+  var discount = document.getElementById('discount').value;
+  document.getElementById('finalTotalCost').value = actualTotal - discount;
+}
+
 $(".sliding-link").click(function(e) {
   e.preventDefault();
   var aid = $(this).attr("href");
@@ -88,6 +96,8 @@ function addMed(medIdStockId){
   console.log(medIdStockId);
   var medRow = document.getElementById(medIdStockId);
   console.log(medRow);
+  var medId = medRow.getElementsByTagName("td")[1].innerText;
+  var medStockId = medRow.getElementsByTagName("td")[2].innerText;
   var medName = medRow.getElementsByTagName("td")[3].innerText;
   var medMRP = medRow.getElementsByTagName("td")[4].innerText;
   var medExpiry = medRow.getElementsByTagName("td")[6].innerText;
@@ -95,16 +105,20 @@ function addMed(medIdStockId){
   var billTable = document.getElementById('billTable').getElementsByTagName('tbody')[0];
   var row = billTable.insertRow(count);
   var cell1 = row.insertCell(0);
-  cell1.innerHTML = count+1;
+  cell1.innerHTML = 1+Number(count);
   var cell2 = row.insertCell(1);
-  cell2.innerHTML = "<input id='medName" + count + "' class='form-control' type='text' oninput='addOtherFields('" + count + "');' value='" + medName + "'>";
+  cell2.innerHTML = "<input id='medName"+count+"' name='medName"+count+"' readonly class='form-control-plaintext' type='text' oninput='addOtherFields('" + count + "');' value='" + medName + "'>";
   var cell3 = row.insertCell(2);
-  cell3.innerHTML = "<input id='medMRP" + count + "' class='form-control' type='number' readonly step='0.1' value='" + medMRP + "'>";
+  cell3.innerHTML = "<input id='medId"+count+"' name='medId"+count+"' readonly class='form-control-plaintext' type='number' value='" + medId + "'>";
   var cell4 = row.insertCell(3);
-  cell4.innerHTML = "<input id='medQuantity" + count + "' type='number' class='form-control' min='1' oninput='calcTotal(" + count + ");'>";
+  cell4.innerHTML = "<input id='medStockId"+count+"' name='medStockId"+count+"' readonly class='form-control-plaintext' type='number' value='" + medStockId + "'>";
   var cell5 = row.insertCell(4);
-  cell5.innerHTML = "<input id='medExpiry" + count + "' type='date' class='form-control' readonly value='" + medExpiry1 + "'>";
+  cell5.innerHTML = "<input id='medMRP"+count+"' name='medMRP"+count+"' class='form-control-plaintext' type='number' readonly step='0.1' value='" + medMRP + "'>";
   var cell6 = row.insertCell(5);
-  cell6.innerHTML = "<input id='medTotal" + count + "' type='number' class='form-control' readonly step='0.1'>";
+  cell6.innerHTML = "<input id='medQuantity"+count+"' name='medQuantity"+count+"' type='number' class='form-control' min='1' oninput='calcTotal(" + count + ");'>";
+  var cell7 = row.insertCell(6);
+  cell7.innerHTML = "<input id='medExpiry"+count+"' name='medExpiry"+count+"' type='date' class='form-control-plaintext' readonly value='" + medExpiry1 + "'>";
+  var cell8 = row.insertCell(7);
+  cell8.innerHTML = "<input id='medTotal"+count+"' name='medTotal"+count+"' type='number' class='form-control-plaintext' readonly step='0.1'>";
   ++count;
 }
