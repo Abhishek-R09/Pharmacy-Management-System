@@ -76,7 +76,7 @@ function calcBill(){
       var curr = Number(document.getElementById('totalBillAmt').value);
       curr = curr + Number(medCost);
       document.getElementById('totalBillAmt').value = curr;
-      document.getElementById('discount').max = curr;
+      document.getElementById('discount').max = curr-1;
     }
   }
 }
@@ -118,7 +118,7 @@ function addMed(medIdStockId){
   var cell6 = row.insertCell(5);
   cell6.innerHTML = "<input id='medMRP"+count+"' name='medMRP"+count+"' class='form-control-plaintext' type='number' readonly step='0.1' value='" + medMRP + "'>";
   var cell7 = row.insertCell(6);
-  cell7.innerHTML = "<input id='medQuantity"+count+"' name='medQuantity"+count+"' type='number' class='form-control' min='1' oninput='calcTotal(" + count + ");'>";
+  cell7.innerHTML = "<input id='medQuantity"+count+"' name='medQuantity"+count+"' type='number' class='form-control' min='1' oninput='calcTotal(" + count + ");' required>";
   var cell8 = row.insertCell(7);
   cell8.innerHTML = "<input id='medExpiry"+count+"' name='medExpiry"+count+"' type='date' class='form-control-plaintext' readonly value='" + medExpiry1 + "'>";
   var cell9 = row.insertCell(8);

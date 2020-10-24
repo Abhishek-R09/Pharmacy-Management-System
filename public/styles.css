@@ -124,3 +124,31 @@ button {
 .empRemoveCol {
   display: none;
 }
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  #printBill,
+  #printBill * {
+    visibility: visible;
+  }
+
+  tr td:first-child,
+  tr th:first-child {
+    display: none;
+  }
+
+  .form-control {
+    border: transparent;
+    padding: 0;
+  }
+
+  #printBill {
+    overflow: visible;
+    position: absolute !important;
+    left: -250px;
+    top: 100px;
+  }
+}
