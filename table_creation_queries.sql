@@ -191,3 +191,12 @@ ADD CONSTRAINT `employee_fk_id_login`
   
 ALTER TABLE `pharmacy_management_system`.`bill_1` 
 ADD COLUMN `bill_date` DATE NULL AFTER `total_cost`;
+
+ALTER TABLE `pharmacy_management_system`.`employee` 
+DROP FOREIGN KEY `employee_fk_id_login`;
+ALTER TABLE `pharmacy_management_system`.`employee` 
+ADD CONSTRAINT `employee_fk_id_login`
+  FOREIGN KEY (`username`)
+  REFERENCES `pharmacy_management_system`.`login` (`username`)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE;

@@ -140,6 +140,10 @@ button {
     display: none;
   }
 
+  .addBtn {
+    display: none;
+  }
+
   .form-control {
     border: transparent;
     padding: 0;

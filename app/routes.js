@@ -68,9 +68,54 @@ module.exports = function (app, passport) {
 	// we will want this protected so you have to be logged in to visit
 	// we will use route middleware to verify this (the isLoggedIn function)
 	app.get('/', isLoggedIn, function (req, res) {
-		res.render('index.ejs', {
-			user: req.user // get the user out of session and pass to template
+		var query= "SELECT employee.emp_id, employee.emp_name, employee.contact, employee.address, employee.dob, employee. username\
+		FROM employee WHERE employee.username = ?";
+		connection.query(query, [req.user.username], function(err, rows){
+			if (err) {
+				console.log(err);
+			}
+			res.render('index.ejs', {
+				user: req.user,
+				rows: rows
+			});
 		});
+	});
+
+	app.post('/updateDetails', function(req,res){
+		var emp_id = req.body.empId;
+		var old_username = req.body.oldUsername;
+		var emp_username = req.body.empUsername;
+		var emp_contact = req.body.empContact;
+		var emp_address = req.body.empAddress;
+		console.log(emp_id);
+		console.log(emp_username);
+		console.log(emp_contact);
+		console.log(emp_address);
+		if (req.body.empUsername){
+			var query1 = "UPDATE login SET username=? WHERE username=?";
+			connection.query(query1, [emp_username, old_username], function(err, rows){
+				if (err) {
+					console.log(err);
+				}
+			});
+		}
+		if (req.body.empContactt){
+			var query2 = "UPDATE employee SET contact=? WHERE emp_id=?";
+			connection.query(query2, [emp_contact, emp_id], function(err, rows){
+				if (err) {
+					console.log(err);
+				}
+			});
+		}
+		if (req.body.empAddress){
+			var query2 = "UPDATE employee SET address=? WHERE emp_id=?";
+			connection.query(query2, [emp_address, emp_id], function(err, rows){
+				if (err) {
+					console.log(err);
+				}
+			});
+		}
+		res.redirect('/');
 	});
 
 	app.get("/manageUsers", isLoggedIn, function(req, res){
@@ -228,7 +273,7 @@ module.exports = function (app, passport) {
 				console.log('Rows affected:', rows3.affectedRows);
 			});
 		}
-		res.redirect('/createBill');
+		res.redirect('/invoiceHistory');
 	});
 	
 	app.get("/patients", isLoggedIn, function(req,res){
@@ -299,7 +344,7 @@ module.exports = function (app, passport) {
 		FROM medicine \
 		INNER JOIN drug_manufacturer ON medicine.company_id=drug_manufacturer.company_id ORDER BY medicine.med_id";
 		connection.query(query, function(err, rows){
-			var query1 = "select inventory.stock_id, medicine.med_id, DATE_FORMAT(inventory.expiry_date,\'%m-%d-%Y\') AS expiry_date, \
+			var query1 = "select inventory.stock_id, medicine.med_id, DATE_FORMAT(inventory.expiry_date,\'%d-%m-%Y\') AS expiry_date, \
 			inventory.total_number\
 			from inventory INNER JOIN \
 			medicine ON inventory.med_id=medicine.med_id ORDER BY medicine.med_id;";
@@ -352,9 +397,39 @@ module.exports = function (app, passport) {
 			res.redirect('/inventory');
 		});
 	});
-	// app.get("/inventory", isLoggedIn, function(req, res){
-	// 	res.render()
-	// });
+
+	app.get("/invoiceHistory", isLoggedIn, function(req, res){
+		var query = "SELECT bill_1.bill_no, bill_1.payment_mode, bill_1.discount, bill_1.total_cost, \
+		DATE_FORMAT(bill_1.bill_date,\'%d-%m-%Y\') AS bill_date, patient_1.pat_name\
+		 FROM bill_1 INNER JOIN patient_1 ON bill_1.pat_id=patient_1.pat_id";
+		connection.query(query, function(err,rows){
+			res.render('invoice_history.ejs', {user:req.user, rows:rows});
+		});
+	});
+
+	app.get("/billNo:billId",isLoggedIn, function(req,res){
+		var billId = req.params.billId;
+		var query = "SELECT \
+		bill_1.bill_no, bill_1.payment_mode, bill_1.discount, bill_1.total_cost, \
+		DATE_FORMAT(bill_1.bill_date,\'%Y-%m-%d\') AS bill_date, patient_1.pat_name, \
+		patient_1.pat_id, patient_1.age, bill_2.quantity, medicine.med_name, \
+		medicine.mrp FROM bill_1 INNER JOIN patient_1 ON bill_1.pat_id=patient_1.pat_id \
+		INNER JOIN bill_2 ON bill_1.bill_no=bill_2.bill_no \
+		INNER JOIN medicine ON bill_2.med_id=medicine.med_id WHERE bill_1.bill_no = ?";
+
+		// var query = "SELECT bill_1.bill_no, bill_1.payment_mode, bill_1.discount, bill_1.total_cost, \
+		// DATE_FORMAT(bill_1.bill_date,\'%d-%m-%Y\') AS bill_date, patient_1.pat_name, bill_2.quantity, medicine.med_name\
+		// ((FROM bill_1 INNER JOIN patient_1 ON bill_1.pat_id=patient_1.pat_id) \
+		// INNER JOIN bill_2 ON bill_1.bill_no=bill_2.bill_no) WHERE bill_1.bill_no = ?";
+		// var query1 = "SELECT * FROM bill_1 INNER JOIN bill_2 ON bill_1.bill_no=bill_2.bill_no";
+
+		connection.query(query, [billId], function(err, rows){
+			if (err) {
+				console.log(err);
+			}
+			res.render('billDetails.ejs', {user:req.user, rows:rows});
+		});
+	});
 
 	// =====================================
 	// LOGOUT ==============================

@@ -12,150 +12,63 @@
       <%- include('partials/sidebar'); -%>
 
       <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-        <div
-          class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-          <h1 class="h2">Dashboard</h1>
-          <div class="btn-toolbar mb-2 mb-md-0">
-            <div class="btn-group mr-2">
-              <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
-              <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+        <div class="container-fluid">
+          <h2>Employee Details</h2>
+          <form action="/updateDetails" method="post" id="formfield">
+            <div class="form-row">
+              <div class="form-group col-md-2">
+                <label for="empId">Employee ID</label>
+                <input type="text" name="empId" id="empId" class="form-control-plaintext" readonly value="<%= rows[0].emp_id %>">
+              </div>
+              <div class="form-group col-md-4">
+                <label for="empName">Employee Name</label>
+                <input type="text" id="empName" class="form-control-plaintext" readonly value="<%= rows[0].emp_name %>">
+              </div>
+              <div class="form-group col-md-2">
+                <label for="oldUsername">Old Username</label>
+                <input type="text" name="oldUsername" id="oldUsername" class="form-control-plaintext" value="<%= rows[0].username %>" maxlength="40" readonly>
+              </div>
+              <div class="form-group col-md-2">
+                <label for="empUsername">New Username</label>
+                <input type="text" name="empUsername" id="empUsername" class="form-control" value="<%= rows[0].username %>" maxlength="40">
+              </div>
+              <div class="form-group col-md-2">
+                <label for="empContact">Update Contact</label>
+                <input type="text" name="empContact" id="empContact" class="form-control" value="<%= rows[0].contact %>" maxlength="13">
+              </div>
             </div>
-            <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
-              <span data-feather="calendar"></span>
-              This week
-            </button>
-          </div>
-        </div>
-
-        <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>
-
-        <h2>Section title</h2>
-        <div class="table-responsive">
-          <table class="table table-striped table-sm">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Header</th>
-                <th>Header</th>
-                <th>Header</th>
-                <th>Header</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>1,001</td>
-                <td>Lorem</td>
-                <td>ipsum</td>
-                <td>dolor</td>
-                <td>sit</td>
-              </tr>
-              <tr>
-                <td>1,002</td>
-                <td>amet</td>
-                <td>consectetur</td>
-                <td>adipiscing</td>
-                <td>elit</td>
-              </tr>
-              <tr>
-                <td>1,003</td>
-                <td>Integer</td>
-                <td>nec</td>
-                <td>odio</td>
-                <td>Praesent</td>
-              </tr>
-              <tr>
-                <td>1,003</td>
-                <td>libero</td>
-                <td>Sed</td>
-                <td>cursus</td>
-                <td>ante</td>
-              </tr>
-              <tr>
-                <td>1,004</td>
-                <td>dapibus</td>
-                <td>diam</td>
-                <td>Sed</td>
-                <td>nisi</td>
-              </tr>
-              <tr>
-                <td>1,005</td>
-                <td>Nulla</td>
-                <td>quis</td>
-                <td>sem</td>
-                <td>at</td>
-              </tr>
-              <tr>
-                <td>1,006</td>
-                <td>nibh</td>
-                <td>elementum</td>
-                <td>imperdiet</td>
-                <td>Duis</td>
-              </tr>
-              <tr>
-                <td>1,007</td>
-                <td>sagittis</td>
-                <td>ipsum</td>
-                <td>Praesent</td>
-                <td>mauris</td>
-              </tr>
-              <tr>
-                <td>1,008</td>
-                <td>Fusce</td>
-                <td>nec</td>
-                <td>tellus</td>
-                <td>sed</td>
-              </tr>
-              <tr>
-                <td>1,009</td>
-                <td>augue</td>
-                <td>semper</td>
-                <td>porta</td>
-                <td>Mauris</td>
-              </tr>
-              <tr>
-                <td>1,010</td>
-                <td>massa</td>
-                <td>Vestibulum</td>
-                <td>lacinia</td>
-                <td>arcu</td>
-              </tr>
-              <tr>
-                <td>1,011</td>
-                <td>eget</td>
-                <td>nulla</td>
-                <td>Class</td>
-                <td>aptent</td>
-              </tr>
-              <tr>
-                <td>1,012</td>
-                <td>taciti</td>
-                <td>sociosqu</td>
-                <td>ad</td>
-                <td>litora</td>
-              </tr>
-              <tr>
-                <td>1,013</td>
-                <td>torquent</td>
-                <td>per</td>
-                <td>conubia</td>
-                <td>nostra</td>
-              </tr>
-              <tr>
-                <td>1,014</td>
-                <td>per</td>
-                <td>inceptos</td>
-                <td>himenaeos</td>
-                <td>Curabitur</td>
-              </tr>
-              <tr>
-                <td>1,015</td>
-                <td>sodales</td>
-                <td>ligula</td>
-                <td>in</td>
-                <td>libero</td>
-              </tr>
-            </tbody>
-          </table>
+            <div class="form-row">
+              <div class="form-group col-md-12">
+                <label for="empAddress">Update Address</label>
+                <input type="text" name="empAddress" id="empAddress" class="form-control" value="<%= rows[0].address %>" maxlength="50">
+              </div>
+            </div>
+            <br>
+            <button type="button" name="btn" value="Submit" id="submitBtn" data-toggle="modal" data-target="#confirm-submit" class="btn btn-dark">Update</button>
+            <div class="modal fade" id="confirm-submit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          Confirm Submit
+                      </div>
+                      <div class="modal-body">
+                          <!-- We display the details entered by the user here -->
+                          Are you sure you want to proceed                          
+                      </div>
+                      <div class="modal-footer">
+                          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                          <a href="#" id="submit" class="btn btn-success success">Submit</a>
+                      </div>
+                  </div>
+              </div>
+            </div>
+            <script>
+              $('#submit').click(function(){
+                /* when the submit button in the modal is clicked, submit the form */
+                $('#formfield').submit();
+              });
+            </script>
+          </form>
         </div>
       </main>
     </div>
