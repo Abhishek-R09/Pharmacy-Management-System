@@ -121,7 +121,7 @@ module.exports = function (app, passport) {
         }
       });
     }
-    res.redirect("/");
+    res.redirect("/logout");
   });
 
   app.get("/manageUsers", isLoggedIn, function (req, res) {
