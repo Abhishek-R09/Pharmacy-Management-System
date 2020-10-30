@@ -1,5 +1,5 @@
-  <%- include('partials/header'); -%>
-  <title>Patient Details | VIT Pharmacy</title>
+<%- include('partials/header'); -%>
+<title>Patient Details | VIT Pharmacy</title>
 </head>
 
 <body>
@@ -11,24 +11,27 @@
 
       <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
 
-        
+
         <div class="container-fluid">
           <h2>Add a Patient</h2>
           <form action="/addPatient" method="POST">
             <div class="form-row">
               <div class="form-group col-md-4">
                 <label for="patientName">Patient Name</label>
-                <input name="patient_name" type="text" class="form-control" id="patientName" placeholder="Patient name" maxlength="45" required>
+                <input name="patient_name" type="text" class="form-control" id="patientName" placeholder="Patient name"
+                  maxlength="45" required>
               </div>
               <div class="form-group col-md-4">
                 <label for="patientContact">Contact</label>
-                <input name="patient_contact" type="text" class="form-control" id="patientContact" placeholder="Contact No." maxlength="13" required>
+                <input name="patient_contact" type="text" class="form-control" id="patientContact"
+                  placeholder="Contact No." maxlength="13" required>
               </div>
-              
+
             </div>
             <div class="form-group">
               <label for="patientAddress">Address</label>
-              <input name="patient_address" type="text" class="form-control" id="patientAddress" placeholder="1234 Main St" maxlength="50" required>
+              <input name="patient_address" type="text" class="form-control" id="patientAddress"
+                placeholder="1234 Main St" maxlength="50" required>
             </div>
             <div class="form-row">
               <div class="form-group col-md-2">
@@ -51,12 +54,12 @@
                 <label for="patientDoctor">Doctor Name</label>
                 <select name="patient_doctor" id="patientDoctor" class="form-control">
                   <% rows2.forEach(function(doctor){ %>
-                    <option value="<%= doctor.doc_id %>"><%= doctor.doc_name %> (<%= doctor.doc_id %>)</option>
+                  <option value="<%= doctor.doc_id %>"><%= doctor.doc_name %> (<%= doctor.doc_id %>)</option>
                   <% }); %>
-                  </select>
+                </select>
               </div>
             </div>
-            
+
             <button type="submit" class="btn btn-dark">Add</button>
           </form>
         </div>
@@ -67,7 +70,8 @@
             <div class="input-group-prepend">
               <div class="input-group-text"><i class="fas fa-search"></i></div>
             </div>
-            <input class="form-control" id="searchPatient" type="text" onkeyup="searchPatient()" placeholder="Search a patient">
+            <input class="form-control" id="searchPatient" type="text" onkeyup="searchPatient()"
+              placeholder="Search a patient">
           </div>
           <br>
           <div class="table-responsive">
@@ -85,15 +89,15 @@
               </thead>
               <tbody>
                 <% rows.forEach(function(patient){ %>
-                  <tr>
-                    <td><%= patient.pat_id %></td>
-                    <td><%= patient.pat_name %></td>
-                    <td><%= patient.contact %></td>
-                    <td><%= patient.address %></td>
-                    <td><%= patient.gender %></td>
-                    <td><%= patient.age %></td>
-                    <td><%= patient.doc_name %></td>
-                  </tr>
+                <tr>
+                  <td><%= patient.pat_id %></td>
+                  <td><%= patient.pat_name %></td>
+                  <td><%= patient.contact %></td>
+                  <td><%= patient.address %></td>
+                  <td><%= patient.gender %></td>
+                  <td><%= patient.age %></td>
+                  <td><%= patient.doc_name %></td>
+                </tr>
                 <% }); %>
               </tbody>
             </table>
@@ -118,8 +122,8 @@
           } else {
             tr[i].style.display = "none";
           }
-        }       
+        }
       }
     }
-    </script>
+  </script>
   <%- include('partials/footer'); -%>
