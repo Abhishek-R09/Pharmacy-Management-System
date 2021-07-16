@@ -4,14 +4,13 @@
   "description": "Pharmacy Management System",
   "main": "app.js",
   "scripts": {
+    "dev": "nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bcrypt-nodejs": "0.0.3",
     "bcryptjs": "^2.4.3",
-    "body-parser": "^1.19.0",
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.5",
     "dotenv": "^8.2.0",
@@ -19,7 +18,6 @@
     "express": "^4.17.1",
     "express-session": "^1.17.1",
     "jshint": "^2.12.0",
-    "md5": "^2.3.0",
     "morgan": "^1.10.0",
     "mysql": "^2.18.1",
     "nodemon": "^2.0.6",

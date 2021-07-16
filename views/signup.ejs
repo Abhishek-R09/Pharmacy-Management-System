@@ -3,7 +3,7 @@
 <html>
 
 <head>
-    <title>Authentication | VIT Pharmacy</title>
+    <title>Signup | VIT Pharmacy</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
     <!-- load bootstrap css -->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
@@ -18,7 +18,7 @@
 <body>
     <div class="container">
         <div class="col-sm-6 col-sm-offset-3">
-            <h1><span class="fa fa-sign-in"></span> Login</h1>
+            <h1><span class="fa fa-sign-in"></span> Signup</h1>
 
             <!-- show any messages that come back with authentication -->
             <% if (message.length> 0) { %>
@@ -28,7 +28,7 @@
                 <% } %>
 
                     <!-- LOGIN FORM -->
-                    <form action="/login" method="post"
+                    <form action="/signup" method="post"
                         onsubmit="return function submitHandler(e){e.preventDefault();}">
                         <div class="form-group">
                             <label>Username</label>
@@ -38,12 +38,12 @@
                             <label>Password</label>
                             <input type="password" class="form-control" name="password">
                         </div>
-                        <div class="form-group">
-                            <label>Remember Me</label>
-                            <input type="checkbox" class="form-control" name="remember" value="yes">
-                        </div>
+                        <!-- <div class="form-group">
+                    <label>Remember Me</label>
+                    <input type="checkbox" class="form-control" name="remember" value="yes">
+                </div> -->
 
-                        <button type="submit" class="btn btn-warning btn-lg">Login</button>
+                        <button type="submit" class="btn btn-warning btn-lg">Signup</button>
                     </form>
 
                     <hr>
