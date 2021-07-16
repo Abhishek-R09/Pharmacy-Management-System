@@ -1,118 +1,9 @@
 /*jshint multistr: true */
-var bcrypt = require('bcryptjs');
-// connection.query('USE ' + dbconfig.database);
+const bcrypt = require('bcryptjs');
 const connection = require('../db/connect');
+const { isLoggedIn } = require('../middlewares/isAuthenticated');
 
-module.exports = function (app, passport) {
-  app.get('/login', function (req, res) {
-    // if (isLoggedIn()){
-    // 	res.redirect('/home');
-    // }
-
-    // render the page and pass in any flash data if it exists
-    res.render('login.ejs', { message: req.flash('loginMessage') });
-  });
-
-  // process the login form
-  app.post(
-    '/login',
-    passport.authenticate('local-login', {
-      successRedirect: '/', // redirect to the secure profile section
-      failureRedirect: '/login', // redirect back to the signup page if there is an error
-      failureFlash: true, // allow flash messages
-    }),
-    function (req, res) {
-      console.log('hello');
-
-      if (req.body.remember) {
-        req.session.cookie.maxAge = 1000 * 60 * 3;
-      } else {
-        req.session.cookie.expires = false;
-      }
-      res.redirect('/login');
-    }
-  );
-
-  // =====================================
-  // SIGNUP ==============================
-  // =====================================
-  // show the signup form
-  app.get('/signup', function (req, res) {
-    // render the page and pass in any flash data if it exists
-    res.render('signup.ejs', { message: req.flash('signupMessage') });
-  });
-
-  // process the signup form
-  app.post(
-    '/signup',
-    passport.authenticate('local-signup', {
-      successRedirect: '/home', // redirect to the secure profile section
-      failureRedirect: '/signup', // redirect back to the signup page if there is an error
-      failureFlash: true, // allow flash messages
-    })
-  );
-
-  // =====================================
-  // PROFILE SECTION =========================
-  // =====================================
-  // we will want this protected so you have to be logged in to visit
-  // we will use route middleware to verify this (the isLoggedIn function)
-  app.get('/', isLoggedIn, function (req, res) {
-    var query =
-      'SELECT employee.emp_id, employee.emp_name, employee.contact, employee.address, employee.dob, employee. username\
-		FROM employee WHERE employee.username = ?';
-    connection.query(query, [req.user.username], function (err, rows) {
-      if (err) {
-        console.log(err);
-      }
-      res.render('index.ejs', {
-        user: req.user,
-        rows: rows,
-      });
-    });
-  });
-
-  app.post('/updateDetails', function (req, res) {
-    var emp_id = req.body.empId;
-    var old_username = req.body.oldUsername;
-    var emp_username = req.body.empUsername;
-    var emp_contact = req.body.empContact;
-    var emp_address = req.body.empAddress;
-    console.log(emp_id);
-    console.log(emp_username);
-    console.log(emp_contact);
-    console.log(emp_address);
-    if (req.body.empUsername) {
-      var query1 = 'UPDATE login SET username=? WHERE username=?';
-      connection.query(
-        query1,
-        [emp_username, old_username],
-        function (err, rows) {
-          if (err) {
-            console.log(err);
-          }
-        }
-      );
-    }
-    if (req.body.empContact) {
-      var query2 = 'UPDATE employee SET contact=? WHERE emp_id=?';
-      connection.query(query2, [emp_contact, emp_id], function (err, rows) {
-        if (err) {
-          console.log(err);
-        }
-      });
-    }
-    if (req.body.empAddress) {
-      var query2 = 'UPDATE employee SET address=? WHERE emp_id=?';
-      connection.query(query2, [emp_address, emp_id], function (err, rows) {
-        if (err) {
-          console.log(err);
-        }
-      });
-    }
-    res.redirect('/logout');
-  });
-
+module.exports = function (app) {
   app.get('/manageUsers', isLoggedIn, function (req, res) {
     var query1 =
       'SELECT employee.emp_id, employee.emp_name, employee.contact, employee.address, \
@@ -507,26 +398,4 @@ module.exports = function (app, passport) {
       res.render('billDetails.ejs', { user: req.user, rows: rows });
     });
   });
-
-  // =====================================
-  // LOGOUT ==============================
-  // =====================================
-  app.get('/logout', function (req, res) {
-    req.logout();
-    req.session.destroy();
-    // setTimeout(function(){ window.location = "../views/login.ejs"; },3000);
-    res.redirect('/login');
-  });
 };
-
-// route middleware to make sure
-function isLoggedIn(req, res, next) {
-  // if user is authenticated in the session, carry on
-  if (req.isAuthenticated()) {
-    // res.redirect('/home');
-    return next();
-  }
-
-  // if they aren't redirect them to the home page
-  res.redirect('/login');
-}

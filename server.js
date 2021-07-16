@@ -1,14 +1,11 @@
 require('dotenv').config();
-var express = require('express');
-var app = express();
-var session = require('express-session');
-var cookieParser = require('cookie-parser');
-var morgan = require('morgan');
-var passport = require('passport');
-var flash = require('connect-flash');
-
-// configuration ===============================================================
-// connect to our database
+const express = require('express');
+const app = express();
+const session = require('express-session');
+const cookieParser = require('cookie-parser');
+const morgan = require('morgan');
+const passport = require('passport');
+const flash = require('connect-flash');
 
 require('./config/passport')(passport); // pass passport for configuration
 
@@ -20,28 +17,27 @@ app.use(
     extended: true,
   })
 );
-
 app.use(express.json());
+app.set('view engine', 'ejs');
 
-app.set('view engine', 'ejs'); // set up ejs for templating
-
-// required for passport
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
     resave: true,
     saveUninitialized: true,
   })
-); // session secret
+);
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 
-// routes ======================================================================
-// load our routes and pass in our app and fully configured passport
+app.use('/', require('./routes/auth')(passport));
+const protectedRoutes = require('./routes/protected');
+app.use('/', protectedRoutes);
+
 require('./routes/routes.js')(app, passport);
 
-var port = process.env.PORT || 3000;
+const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`Server listening on port: ${port}`);
 });
