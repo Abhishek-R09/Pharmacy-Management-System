@@ -1,4 +1,4 @@
-const doctorQueries = require('../db/Doctor');
+const doctorQueries = require('../../db/Doctor');
 
 const getAllDoctors = async (req, res) => {
   try {

@@ -1,5 +1,5 @@
-const patientQueries = require('../db/Patient');
-const doctorQueries = require('../db/Doctor');
+const patientQueries = require('../../db/Patient');
+const doctorQueries = require('../../db/Doctor');
 
 const getAllPatients = async (req, res) => {
   try {

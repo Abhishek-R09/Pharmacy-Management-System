@@ -2,7 +2,7 @@ const {
   getAllEmployees,
   addNewEmployee,
   deleteEmployee,
-} = require('../db/Users');
+} = require('../../db/Users');
 const bcrypt = require('bcryptjs');
 
 const getEmployees = async (req, res) => {

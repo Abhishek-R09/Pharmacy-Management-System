@@ -3,7 +3,7 @@ const {
   updateEmployeeUsername,
   updateEmployeeContact,
   updateEmployeeAddress,
-} = require('../db/Users');
+} = require('../../db/Users');
 
 const retrieveEmployeeDetails = async (req, res) => {
   try {

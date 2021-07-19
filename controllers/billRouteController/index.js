@@ -1,4 +1,4 @@
-const billQueries = require('../db/Bill');
+const billQueries = require('../../db/Bill');
 
 const initialData = async (req, res) => {
   let today = new Date();
