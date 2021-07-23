@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const billRouteControllers = require('../../controllers/billRouteController');
+const billRouteControllers = require('../../controllers/Bill');
 
 router.get('/createBill', billRouteControllers.initialData);
 

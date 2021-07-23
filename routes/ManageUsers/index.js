@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const manageUsersRouteControllers = require('../../controllers/manageUsersRouteController');
+const manageUsersRouteControllers = require('../../controllers/ManageUsers');
 
 router.get('/manageUsers', manageUsersRouteControllers.getEmployees);
 

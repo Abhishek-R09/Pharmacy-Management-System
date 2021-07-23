@@ -1,5 +1,5 @@
 const express = require('express');
-const homeRouteController = require('../../controllers/homeRouteController');
+const homeRouteController = require('../../controllers/Home');
 const router = express.Router();
 
 router.get('/', homeRouteController.retrieveEmployeeDetails);

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const doctorRouteControllers = require('../../controllers/doctorRouteController');
+const doctorRouteControllers = require('../../controllers/Doctor');
 
 router.get('/doctors', doctorRouteControllers.getAllDoctors);
 
