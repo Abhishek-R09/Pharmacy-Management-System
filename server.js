@@ -35,8 +35,6 @@ app.use('/', require('./routes/auth')(passport));
 const protectedRoutes = require('./routes/protected');
 app.use('/', protectedRoutes);
 
-require('./routes/routes.js')(app, passport);
-
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`Server listening on port: ${port}`);

@@ -6,6 +6,8 @@ const manageUsersRouter = require('./ManageUsers');
 const billRouter = require('./Bill');
 const patientRouter = require('./Patient');
 const doctorRouter = require('./Doctor');
+const inventoryRoute = require('./Inventory');
+const invoicesRoute = require('./Invoice');
 
 router.use(isLoggedIn);
 
@@ -14,5 +16,7 @@ router.use('/', manageUsersRouter);
 router.use('/', billRouter);
 router.use('/', patientRouter);
 router.use('/', doctorRouter);
+router.use('/', inventoryRoute);
+router.use('/', invoicesRoute);
 
 module.exports = router;
