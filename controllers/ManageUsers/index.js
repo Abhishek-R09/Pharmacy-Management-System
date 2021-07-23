@@ -8,9 +8,9 @@ const bcrypt = require('bcryptjs');
 const getEmployees = async (req, res) => {
   try {
     const employees = await getAllEmployees();
-    res.render('manage_users.ejs', {
+    res.render('ManageUsers/index.ejs', {
       user: req.user,
-      rows: employees,
+      employees,
       message: '',
     });
   } catch (error) {
@@ -30,10 +30,14 @@ const addEmployee = async (req, res) => {
     const salt = await bcrypt.genSalt();
     empPassword = await bcrypt.hash(req.body.emp_pass, salt);
   } catch (err) {
-    res.status(500).send('Bcrypt error!');
+    return res
+      .status(500)
+      .send(`<pre>${err} Bcrypt error!</pre><br /><a href='/'>Go to home</a>`);
   }
   if (!empPassword) {
-    return res.status(500).send('BCrypt Error');
+    return res
+      .status(500)
+      .send(`<pre>Bcrypt error!</pre><br /><a href='/'>Go to home</a>`);
   }
   const empRole = req.body.emp_role;
   try {

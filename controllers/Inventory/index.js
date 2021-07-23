@@ -3,12 +3,12 @@ const inventoryQueries = require('../../db/Inventory');
 const getInventoryPageDetails = async (req, res) => {
   try {
     const result = await inventoryQueries.medicineAndStockDetails();
-    res.render('inventory.ejs', {
+    res.render('Inventory/index.ejs', {
       user: req.user,
-      rows: result.data.medicines,
-      rows1: result.data.stocks,
-      rows2: result.data.employees,
-      rows3: result.data.drugManufacturers,
+      medicines: result.data.medicines,
+      stocks: result.data.stocks,
+      employees: result.data.employees,
+      drugManufacturers: result.data.drugManufacturers,
     });
   } catch (error) {
     res.status(500).send(`<pre>${error}</pre><a href="/">Go to home!</a>`);

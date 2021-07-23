@@ -5,10 +5,10 @@ const getAllPatients = async (req, res) => {
   try {
     const patients = await patientQueries.getPatients();
     const doctors = await doctorQueries.getDoctorsIdAndName();
-    res.render('patient_details.ejs', {
+    res.render('Patient/index.ejs', {
       user: req.user,
-      rows: patients,
-      rows2: doctors,
+      patients,
+      doctors,
       message: '',
     });
   } catch (error) {

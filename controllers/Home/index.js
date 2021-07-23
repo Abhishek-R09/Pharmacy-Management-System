@@ -8,12 +8,13 @@ const {
 const retrieveEmployeeDetails = async (req, res) => {
   try {
     const employeeDetails = await getEmployeeDetails(req.user.username);
-    res.render('index.ejs', {
+    res.render('Home/index.ejs', {
       user: req.user,
-      rows: employeeDetails,
+      userDetails: employeeDetails,
     });
   } catch (error) {
     console.error(error);
+    res.status(500).send(`<pre>${error}</><br /><a href='/'>Go to home!</>`);
   }
 };
 
@@ -25,10 +26,10 @@ const updateEmployeeDetails = async (req, res) => {
   const emp_contact = req.body?.empContact;
   const emp_address = req.body?.empAddress;
 
-  console.log(old_username);
-  console.log(new_username);
-  console.log(emp_contact);
-  console.log(emp_address);
+  // console.log(old_username);
+  // console.log(new_username);
+  // console.log(emp_contact);
+  // console.log(emp_address);
 
   if (old_username != new_username) {
     try {
@@ -54,7 +55,7 @@ const updateEmployeeDetails = async (req, res) => {
       console.log(error);
     }
   }
-  res.redirect('/logout');
+  res.redirect('/');
 };
 
 module.exports = { retrieveEmployeeDetails, updateEmployeeDetails };

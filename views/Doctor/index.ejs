@@ -1,0 +1,104 @@
+<%- include('../partials/header'); -%>
+  <title>Doctor Details | E-Pharmacy</title>
+
+  </head>
+
+  <body>
+    <%- include('../partials/navbar'); -%>
+
+      <div class="container-fluid" style="margin-top: 20px;">
+        <div class="row">
+          <%- include('../partials/sidebar'); -%>
+
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+
+              <div class="container-fluid">
+                <h2>Add a Doctor</h2>
+                <form action="/doctors/addDoctor" method="POST">
+                  <div class="form-row">
+                    <div class="form-group col-md-4">
+                      <label for="doctorName">Doctor Name</label>
+                      <input name="doctor_name" type="text" class="form-control" id="doctorName" maxlength="45"
+                        required>
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group col-md-4">
+                      <label for="doctorContact">Contact</label>
+                      <input name="doctor_contact" type="text" class="form-control" id="doctorContact" maxlength="13"
+                        required>
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group col-md-4">
+                      <label for="doctorSpecialization">Specialization</label>
+                      <input name="doctor_specialization" type="text" class="form-control" id="doctorSpecialization"
+                        placeholder="Ex: Cardiology" maxlength="45" required>
+                    </div>
+                  </div>
+                  <button type="submit" class="btn btn-dark">Add</button>
+                </form>
+              </div>
+
+              <div class="container-fluid">
+                <h2>Doctor Details</h2>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text"><i class="fas fa-search"></i></div>
+                  </div>
+                  <input class="form-control" id="searchDoctor" type="text" onkeyup="searchDoctor()"
+                    placeholder="Search a doctor">
+                </div>
+                <br>
+                <div class="table-responsive">
+                  <table class="table table-striped table-bordered table-hover" id="myTable">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th>Name</th>
+                        <th>Contact</th>
+                        <th>Specialization</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% doctors.forEach(function(doctor){ %>
+                        <tr>
+                          <td>
+                            <%= doctor.doc_name %>
+                          </td>
+                          <td>
+                            <%= doctor.contact %>
+                          </td>
+                          <td>
+                            <%= doctor.specialization %>
+                          </td>
+
+                        </tr>
+                        <% }); %>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </main>
+        </div>
+      </div>
+      <script>
+        function searchDoctor() {
+          var input, filter, table, tr, td, i, txtValue;
+          input = document.getElementById("searchDoctor");
+          filter = input.value.toUpperCase();
+          table = document.getElementById("myTable");
+          tr = table.getElementsByTagName("tr");
+          for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            if (td) {
+              txtValue = td.textContent || td.innerText;
+              if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+              } else {
+                tr[i].style.display = "none";
+              }
+            }
+          }
+        }
+      </script>
+      <%- include('../partials/footer'); -%>

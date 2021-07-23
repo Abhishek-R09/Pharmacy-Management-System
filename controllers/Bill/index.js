@@ -12,11 +12,12 @@ const initialData = async (req, res) => {
     const medAndStock = await billQueries.getMedicinesAndStocks();
     const patAndDoc = await billQueries.getPatientAndDoctor();
     const currBillNo = await billQueries.getCurrentBillNo();
-    res.render('create_bill.ejs', {
+    // console.log(currBillNo);
+    res.render('Bill/index.ejs', {
       user: req.user,
-      rows: medAndStock,
-      rows2: patAndDoc,
-      bills: currBillNo,
+      medAndStock,
+      patAndDoc,
+      currBillNo,
       today: today,
     });
   } catch (error) {

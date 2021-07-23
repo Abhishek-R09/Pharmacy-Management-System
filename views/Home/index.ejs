@@ -1,0 +1,84 @@
+<%- include('../partials/header'); -%>
+  <title>Home | E-Pharmacy</title>
+
+  </head>
+
+  <body>
+    <%- include('../partials/navbar'); -%>
+
+      <div class="container-fluid">
+        <div class="row">
+          <%- include('../partials/sidebar'); -%>
+
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+              <div class="container-fluid">
+                <h2>Employee Details</h2>
+                <form action="/updateDetails" method="post" id="formfield">
+                  <div class="form-row">
+                    <div class="form-group col-md-2">
+                      <label for="empId">Employee ID</label>
+                      <input type="text" name="empId" id="empId" class="form-control-plaintext" readonly
+                        value="<%= userDetails[0].emp_id %>">
+                    </div>
+                    <div class="form-group col-md-4">
+                      <label for="empName">Employee Name</label>
+                      <input type="text" id="empName" class="form-control-plaintext" readonly
+                        value="<%= userDetails[0].emp_name %>">
+                    </div>
+                    <div class="form-group col-md-2">
+                      <label for="oldUsername">Old Username</label>
+                      <input type="text" name="oldUsername" id="oldUsername" class="form-control-plaintext"
+                        value="<%= userDetails[0].username %>" maxlength="40" readonly>
+                    </div>
+                    <div class="form-group col-md-2">
+                      <label for="empUsername">New Username</label>
+                      <input type="text" name="empUsername" id="empUsername" class="form-control"
+                        value="<%= userDetails[0].username %>" maxlength="40">
+                    </div>
+                    <div class="form-group col-md-2">
+                      <label for="empContact">Update Contact</label>
+                      <input type="text" name="empContact" id="empContact" class="form-control"
+                        value="<%= userDetails[0].contact %>" maxlength="13">
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group col-md-12">
+                      <label for="empAddress">Update Address</label>
+                      <input type="text" name="empAddress" id="empAddress" class="form-control"
+                        value="<%= userDetails[0].address %>" maxlength="50">
+                    </div>
+                  </div>
+                  <br>
+                  <button type="button" name="btn" value="Submit" id="submitBtn" data-toggle="modal"
+                    data-target="#confirm-submit" class="btn btn-dark">Update</button>
+                  <div class="modal fade" id="confirm-submit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          Confirm Submit
+                        </div>
+                        <div class="modal-body">
+                          <!-- We display the details entered by the user here -->
+                          Are you sure you want to proceed
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                          <a href="#" id="submit" class="btn btn-success success">Submit</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <script>
+                    $('#submit').click(function () {
+                      /* when the submit button in the modal is clicked, submit the form */
+                      $('#formfield').submit();
+                    });
+                  </script>
+                </form>
+              </div>
+            </main>
+        </div>
+      </div>
+
+      <%- include('../partials/footer'); -%>

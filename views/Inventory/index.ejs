@@ -1,0 +1,231 @@
+<%- include('../partials/header'); -%>
+  <title>Inventory | E-Pharmacy</title>
+  <script type="text/javascript">
+    function showHideRow(row) {
+      // $("." + row).toggle('slow','swing');
+      $("." + row).toggle('slow', 'swing');
+      // $("." + row).find("td").contents().slideToggle();
+      // $("." + row).slideToggle();
+    }
+  </script>
+  </head>
+
+  <body>
+    <%- include('../partials/navbar'); -%>
+
+      <div class="container-fluid" style="margin-top: 20px;">
+        <div class="row">
+          <%- include('../partials/sidebar'); -%>
+
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+
+              <div class="container-fluid">
+
+                <div class="row">
+                  <div class="col border-left border-top border-bottom">
+                    <h2>Add new Stock</h2>
+                    <form action="/inventory/addStock" method="POST">
+                      <div class="form-row">
+                        <div class="form-group col-md-5">
+                          <label for="medName">Medicine Name</label>
+                          <input name="med_name" type="text" class="form-control" id="medName" maxlength="45" required
+                            onchange="updateMedId();">
+                        </div>
+                        <script>
+                          $(function () {
+                            var availableNames = [];
+                            "<% medicines.forEach(medicine=>{ %>"
+                            availableNames.push("<%= medicine.med_name %>");
+                            "<% }); %>"
+                            $("#medName").autocomplete({
+                              source: availableNames
+                            });
+                          });
+                        </script>
+                        <div class="form-group col-md-5">
+                          <label for="medId">Medicine ID</label>
+                          <input name="med_id" type="number" class="form-control" id="medId" required readonly>
+                        </div>
+                        <script>
+                          function updateMedId() {
+                            "<% medicines.forEach(medicine=>{ %>"
+                            if ("<%= medicine.med_name %>" == document.getElementById('medName').value) {
+                              document.getElementById('medId').value = "<%= medicine.med_id %>";
+                            }
+                            "<% }); %>"
+                          }
+                        </script>
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group col-md-5">
+                          <label for="expiryDate">Batch Expiry Date</label>
+                          <input name="expiry_date" type="date" class="form-control" id="expiryDate" required>
+                        </div>
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group col-md-5">
+                          <label for="totalStock">New Stock Quantity</label>
+                          <input name="total_stock" type="number" class="form-control" id="totalStock" required>
+                        </div>
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group col-md-5">
+                          <label for="associatedEmpName">Associated Employee Name</label>
+                          <input name="emp_name" type="text" class="form-control" id="associatedEmpName"
+                            onchange="updateEmpId();" required>
+                        </div>
+                        <script>
+                          $(function () {
+                            var availableNames = [];
+                            "<% employees.forEach(employee=>{ %>"
+                            availableNames.push("<%= employee.emp_name %>");
+                            "<% }); %>"
+                            $("#associatedEmpName").autocomplete({
+                              source: availableNames
+                            });
+                          });
+                        </script>
+                        <div class="form-group col-md-5">
+                          <label for="associatedEmpId">Associated Employee ID</label>
+                          <input name="associated_emp_id" type="number" class="form-control" id="associatedEmpId"
+                            required readonly>
+                        </div>
+                        <script>
+                          function updateEmpId() {
+                            "<% employees.forEach(employee=>{ %>"
+                            if ("<%= employee.emp_name %>" == document.getElementById('associatedEmpName').value) {
+                              document.getElementById('associatedEmpId').value = "<%= employee.emp_id %>";
+                            }
+                            "<% }); %>"
+                          }
+                        </script>
+                      </div>
+                      <button type="submit" class="btn btn-dark">Add</button>
+                    </form>
+                  </div>
+                  <div class="col border">
+                    <h2>Add new Medicine</h2>
+                    <form action="/inventory/addMedicine" method="POST">
+                      <div class="form-row">
+                        <div class="form-group col-md-5">
+                          <label for="newMedName">Medicine Name</label>
+                          <input name="new_med_name" type="text" class="form-control" id="newMedName" maxlength="45"
+                            required>
+                        </div>
+                        <div class="form-group col-md-5">
+                          <label for="newMedMRP">MRP</label>
+                          <input name="new_med_mrp" type="number" class="form-control" id="newMedMRP" required>
+                        </div>
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group col-md-5">
+                          <label for="primaryDrug">Primary Drug</label>
+                          <input name="primary_drug" type="text" class="form-control" id="primaryDrug" required>
+                        </div>
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group col-md-5">
+                          <label for="dosage">Dosage</label>
+                          <input name="dosage" type="text" class="form-control" id="dosage" required>
+                        </div>
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group col-md-5">
+                          <label for="companyName">Company Name</label>
+                          <input name="company_name" type="text" class="form-control" id="companyName" required
+                            onchange="updateCompanyId();">
+                        </div>
+                        <script>
+                          $(function () {
+                            var availableNames = [];
+                            "<% drugManufacturers.forEach(drugManufacturer=>{ %>"
+                            availableNames.push("<%= drugManufacturer.name %>");
+                            "<% }); %>"
+                            $("#companyName").autocomplete({
+                              source: availableNames
+                            });
+                          });
+                        </script>
+                        <div class="form-group col-md-5">
+                          <label for="companyId">Company ID</label>
+                          <input name="company_id" type="number" class="form-control" id="companyId" required readonly>
+                        </div>
+                        <script>
+                          function updateCompanyId() {
+                            "<% drugManufacturers.forEach(drugManufacturer=>{ %>"
+                            if ("<%= drugManufacturer.name %>" == document.getElementById('companyName').value) {
+                              document.getElementById('companyId').value = "<%= drugManufacturer.company_id %>";
+                            }
+                            "<% }); %>"
+                          }
+                        </script>
+                      </div>
+                      <button type="submit" class="btn btn-dark">Add</button>
+                    </form>
+                  </div>
+                </div>
+
+
+
+                <div class="container-fluid">
+                  <h2>Medicine List</h2>
+                  <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                      <thead class="thead-dark">
+                        <tr>
+                          <th>Medicine ID</th>
+                          <th>Medicine Name</th>
+                          <th>MRP</th>
+                          <th>Primary Drug</th>
+                          <th>Company Name</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <% medicines.forEach(function(medicine){ %>
+                          <tr>
+                            <td style="cursor: pointer;" class="" onclick="showHideRow('<%= medicine.med_id %>');"><i
+                                class="fas fa-caret-down"></i>&emsp;<%= medicine.med_id %>
+                            </td>
+                            <td>
+                              <%= medicine.med_name %>
+                            </td>
+                            <td>&#x20B9;<%= medicine.mrp %>
+                            </td>
+                            <td>
+                              <%= medicine.primary_drug %>
+                            </td>
+                            <td>
+                              <%= medicine.name %>
+                            </td>
+                          </tr>
+                          <tr class="thead-light table-active <%= medicine.med_id %>" style="display: none;">
+                            <td>Stock ID</td>
+                            <td colspan="3">Expiry Date</td>
+                            <td>Total Quantity</td>
+                          </tr>
+
+
+                          <% for (var stock=0; stock < stocks.length; ++stock){ %>
+                            <% if (medicine.med_id===stocks[stock].med_id){ %>
+                              <tr class="table-info <%= medicine.med_id %>" style="display: none;">
+                                <td>
+                                  <%= stocks[stock].stock_id %>
+                                </td>
+                                <td colspan="3">
+                                  <%= stocks[stock].expiry_date %>
+                                </td>
+                                <td>
+                                  <%= stocks[stock].total_number %>
+                                </td>
+                              </tr>
+                              <% } %>
+                                <% } %>
+                                  <% }); %>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+            </main>
+        </div>
+      </div>
+      <%- include('../partials/footer'); -%>

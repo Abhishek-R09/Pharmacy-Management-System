@@ -3,7 +3,7 @@ const doctorQueries = require('../../db/Doctor');
 const getAllDoctors = async (req, res) => {
   try {
     const doctors = await doctorQueries.getDoctorDetails();
-    res.render('doctor_details.ejs', { user: req.user, rows: doctors });
+    res.render('Doctor/index.ejs', { user: req.user, doctors });
   } catch (error) {
     res.status(500).send(`<pre>${error}</pre><a href="/">Go to home!</a>`);
   }

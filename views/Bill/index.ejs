@@ -1,0 +1,245 @@
+<%- include('../partials/header'); -%>
+  <title>Generate Bill | E-Pharmacy</title>
+  </head>
+
+  <body>
+    <%- include('../partials/navbar'); -%>
+
+      <div class="container-fluid">
+        <div class="row">
+          <%- include('../partials/sidebar'); -%>
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+              <div class="container-fluid">
+                <button class="btn btn-dark" style="margin: 20px 0 15px;"><a class="sliding-link" style="color: #fff;"
+                    href="#medicineList">Click here to check medicines list</a></button>
+                <form id="formfield" action="/newBill/generateBill" method="POST"
+                  oninput="calcBill(); calcFinalBill();">
+                  <div id="printBill">
+                    <h3 id="billTitle">VIT Pharmacy | Invoice</h3>
+                    <br>
+                    <div class="form-row">
+                      <div class="form-group col-md-1">
+                        <label for="billNo">Bill No.</label>
+                        <input type="text" class="form-control-plaintext" id="billNo"
+                          value="<%= 1 + currBillNo[0].bill_no %>" readonly required>
+                      </div>
+                      <div class="form-group col-md-1">
+                        <label for="patId">Patient Id</label>
+                        <input class="form-control-plaintext" type="text" name="patId" id="patId" required>
+                      </div>
+                      <script>
+                        function updatePatId() {
+                          "<% patAndDoc.forEach(element=>{ %>"
+                          if ("<%= element.pat_name %>" == document.getElementById('patName').value) {
+                            document.getElementById('patId').value = "<%= element.pat_id %>";
+                          }
+                          "<% }); %>"
+                        }
+                      </script>
+                      <div class="form-group col-md-3">
+                        <label for="patName">Patient Name</label>
+                        <input class="form-control" type="text" name="patName" id="patName"
+                          onchange="updateDoc(); updateAge(); updatePatId();" required>
+                      </div>
+                      <script>
+                        $(function () {
+                          var availableNames = [];
+                          "<% patAndDoc.forEach(element=>{ %>"
+                          availableNames.push("<%= element.pat_name %>");
+                          "<% }); %>"
+                          $("#patName").autocomplete({
+                            source: availableNames
+                          });
+                        });
+                      </script>
+
+                      <div class="form-group col-md-3">
+                        <label for="patDocs">Doctor Name</label>
+                        <input class="form-control" type="text" name="patDoc" id="patDocs">
+                      </div>
+                      <script>
+                        function updateDoc() {
+                          var availableNames = [];
+                          "<% patAndDoc.forEach(element=>{ %>"
+                          if ("<%= element.pat_name %>" == document.getElementById('patName').value) {
+                            availableNames.push("<%= element.doc_name %>");
+                          }
+                          "<% }); %>"
+                          $("#patDocs").autocomplete({
+                            source: availableNames
+                          });
+                        }
+                      </script>
+                      <div class="form-group col-md-1">
+                        <label for="patAge">Age</label>
+                        <input class="form-control-plaintext" type="number" name="patAge" id="patAge" readonly required>
+                      </div>
+                      <script>
+                        function updateAge() {
+                          "<% patAndDoc.forEach(element=>{ %>"
+                          if ("<%= element.pat_name %>" == document.getElementById('patName').value) {
+                            document.getElementById('patAge').value = "<%= element.age %>";
+                          }
+                          "<% }); %>"
+                        }
+                      </script>
+                      <div class="form-group col-md-2">
+                        <label for="billDate">Billing Date</label>
+                        <input class="form-control-plaintext" type="date" name="billDate" id="billDate"
+                          value="<%= today %>" readonly required>
+                      </div>
+                    </div>
+                    <div class="table-responsive">
+                      <table class="table table-striped table-bordered" id="billTable" style="empty-cells: hide;">
+                        <thead class="thead-dark">
+                          <tr>
+                            <th style="width: 5%;"></th>
+                            <th style="width: 8%;">Sr. No.</th>
+                            <th style="width: 20%;">Medicine Name</th>
+                            <th style="width: 15%;">Medicine ID</th>
+                            <th style="width: 15%;">Stock ID</th>
+                            <th style="width: 15%;">MRP (In &#x20B9;)</th>
+                            <th style="width: 9%;">Quantity</th>
+                            <th>Expiry Date</th>
+                            <th style="width: 10%;">Total</th>
+                          </tr>
+                        </thead>
+                        <tbody></tbody>
+                        <tfoot>
+                          <tr class="lastrow">
+                            <td style="border-right: solid transparent;"></td>
+                            <td style="border-right: solid transparent;"></td>
+                            <td style="border-right: solid transparent;"></td>
+                            <td style="border-right: solid transparent;"></td>
+                            <td style="border-right: solid transparent;"></td>
+                            <td style="border-right: solid transparent;"></td>
+                            <td style="border-right: solid transparent;"></td>
+                            <td style="text-align: right;">Total</td>
+                            <td>
+                              <input id="totalBillAmt" min="0" type="number" step="0.1" readonly
+                                class="form-control-plaintext" value="0" required>
+                            </td>
+                          </tr>
+                        </tfoot>
+                      </table>
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group col-md-4">
+                        <label for="paymentMode">Payment Mode</label>
+                        <select name="paymentMode" id="paymentMode" class="form-control" required>
+                          <option value="Cash">Cash</option>
+                          <option value="Debit Card">Debit Card</option>
+                          <option value="Credit Card">Credit Card</option>
+                          <option value="Online">Online</option>
+                          <!-- <option value="PayTM">PayTM</option> -->
+                        </select>
+                      </div>
+                      <div class="form-group col-md-3">
+                        <label for="discount">Discount (In &#x20B9;)</label>
+                        <input type="number" name="discount" min="0" class="form-control" id="discount" value="0">
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group col-md-3">
+                        <label for="finalTotalCost">Final Cost</label>
+                        <input type="number" name="finalTotalCost" step="0.1" min="0" class="form-control-plaintext"
+                          id="finalTotalCost" readonly required value="0">
+                      </div>
+                    </div>
+                  </div>
+                  <button type="button" name="btn" value="Submit" id="submitBtn" data-toggle="modal"
+                    data-target="#confirm-submit" class="btn btn-dark">Generate a Bill</button>
+                  <div class="modal fade" id="confirm-submit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          Confirm Submit
+                        </div>
+                        <div class="modal-body">
+                          <!-- We display the details entered by the user here -->
+                          Are you sure you want to proceed
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                          <a href="#" id="submit" class="btn btn-success success">Submit</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <script>
+                    $('#submit').click(function () {
+                      /* when the submit button in the modal is clicked, submit the form */
+                      $('#formfield').submit();
+                      window.print();
+                    });
+                  </script>
+                </form>
+
+              </div>
+              <div class="container-fluid" id="medicineList">
+
+                <h2>Medicine List</h2>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text"><i class="fas fa-search"></i></div>
+                  </div>
+                  <input class="form-control" id="searchMedicine" type="text" onkeyup="searchMedicine();"
+                    placeholder="Search a medicine">
+                </div>
+                <br>
+                <div class="table-responsive">
+                  <table class="table table-bordered table-hover" id="myTable">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th></th>
+                        <th>Medicine ID</th>
+                        <th>Stock ID</th>
+                        <th>Medicine Name</th>
+                        <th>MRP (In &#x20B9;)</th>
+                        <th>Company Name</th>
+                        <th>Expiry Date</th>
+                        <th>Available Stock</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% medAndStock.forEach(function(medicine){ %>
+                        <tr id="Med<%= medicine.med_id %>Stock<%= medicine.stock_id %>">
+                          <td>
+                            <button class="btn btn-dark btn-sm"
+                              onclick="addMed('Med<%= medicine.med_id %>Stock<%= medicine.stock_id %>');"><i
+                                class="fas fa-plus"></i></button>
+                          </td>
+                          <td>
+                            <%= medicine.med_id %>
+                          </td>
+                          <td>
+                            <%= medicine.stock_id %>
+                          </td>
+                          <td>
+                            <%= medicine.med_name %>
+                              <!-- <button onclick="myFunction('<%= medicine.med_name %>')" style="float: right;" class="btn btn-dark btn-sm"><i class="fas fa-copy"></i></button> -->
+                          </td>
+                          <td>
+                            <%= medicine.mrp %>
+                          </td>
+                          <td>
+                            <%= medicine.name %>
+                          </td>
+                          <td>
+                            <%= medicine.expiry_date %>
+                          </td>
+                          <td>
+                            <%= medicine.total_number %>
+                          </td>
+                        </tr>
+                        <% }); %>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </main>
+        </div>
+      </div>
+      <script src="bill.js"></script>
+      <%- include('../partials/footer'); -%>

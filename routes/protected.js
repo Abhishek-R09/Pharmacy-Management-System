@@ -12,11 +12,11 @@ const invoicesRoute = require('./Invoice');
 router.use(isLoggedIn);
 
 router.use('/', homeRouter);
-router.use('/', manageUsersRouter);
-router.use('/', billRouter);
-router.use('/', patientRouter);
-router.use('/', doctorRouter);
-router.use('/', inventoryRoute);
-router.use('/', invoicesRoute);
+router.use('/manageUsers', manageUsersRouter);
+router.use('/newBill', billRouter);
+router.use('/patients', patientRouter);
+router.use('/doctors', doctorRouter);
+router.use('/inventory', inventoryRoute);
+router.use('/invoiceHistory', invoicesRoute);
 
 module.exports = router;
