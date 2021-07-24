@@ -24,9 +24,9 @@ Easy Pharmacy Management System running on Node.js + Express.js server and a MyS
 13. If you face issues connecting to the database in the next steps, refer this [StackOverflow question](https://stackoverflow.com/questions/50093144/mysql-8-0-client-does-not-support-authentication-protocol-requested-by-server)
 14. Now, you can start the node + express server.
 15. In your project root folder, run `npm run dev`. This will start the server at port 3000.
-16. Open your favourite browser at go to [localhost:3000](localhost:3000). This will take you to login page.
+16. Open your favourite browser at go to [localhost:3000](http://localhost:3000/). This will take you to login page.
 17. Right now we don't have any users. Let's create one.
-18. Go the the signup route by clicking on the link on the webpage/ [localhost:3000/signup](localhost:3000/signup)
+18. Go the the signup route by clicking on the link on the webpage/ [localhost:3000/signup](http://localhost:3000/signup)
 19. Create a new user with username 'admin' and password of your choice and press signup.
 20. At this point you'll face an error. This is fine as we'll rectify it.
 21. In the `insertion_queries.sql`, run the query (in workbench) to create an employee. You can identify as it's only a single query.
