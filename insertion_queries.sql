@@ -49,24 +49,9 @@ VALUES("Mridula Tabeed Shetty ","8664052988","Female","SJ7AZU5N01",45,"56, Hadap
 INSERT INTO `pharmacy_management_system`.`patient_1`(`pat_name`,`contact`,`gender`,`insurance_id`,`age`,`address`)
 VALUES("Meghana Ratan Thaker","5384456729","Female","GA23Z79269",38,"78, Chirag Chowk, Noida - 194914");
 
--- inserting into login
--- INSERT INTO `pharmacy_management_system`.`login`(`username`,`password`,`role`)
--- VALUES("Abhi", "Abhi123", "Admin");
--- INSERT INTO `pharmacy_management_system`.`login`(`username`,`password`,`role`)
--- VALUES("Gato", "Gato123", "Cashier");
--- INSERT INTO `pharmacy_management_system`.`login`(`username`,`password`,`role`)
--- VALUES("Sid", "Sid123", "Cashier");
-
 -- inserting into employee
 INSERT INTO `pharmacy_management_system`.`employee`(`emp_name`,`contact`,`address`,`dob`,`username`)
 VALUES("Admin","8163667331","72, RahimGarh, Ranchi - 516473",STR_TO_DATE('01,01,2000','%d,%m,%Y'),"admin");
-
--- INSERT INTO `pharmacy_management_system`.`employee`(`emp_name`,`contact`,`address`,`dob`,`username`)
--- VALUES("Abhishek Ramasubramanian","8163667331","72, RahimGarh, Ranchi - 516473",STR_TO_DATE('09,11,2001','%d,%m,%Y'),"Abhi");
--- INSERT INTO `pharmacy_management_system`.`employee`(`emp_name`,`contact`,`address`,`dob`,`username`)
--- VALUES("Siddharth Gandhi","5340037537","69, Kormangala, Patna - 269720",STR_TO_DATE('24,11,2001','%d,%m,%Y'),"Sid");
--- INSERT INTO `pharmacy_management_system`.`employee`(`emp_name`,`contact`,`address`,`dob`,`username`)
--- VALUES("Atharva Ramgirkar","6246368063","34, Yash Heights, VarunPur Bhubhaneshwar - 419838",STR_TO_DATE('10,05,2001','%d,%m,%Y'),"Gato");
 
 -- inserting into medicine
 INSERT INTO `pharmacy_management_system`.`medicine`(`med_name`,`mrp`,`primary_drug`,`dosage`,`company_id`)
