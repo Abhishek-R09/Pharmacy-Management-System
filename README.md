@@ -1,7 +1,8 @@
-#Pharmacy Management System
+# Pharmacy Management System
+
 Easy Pharmacy Management System running on Node.js + Express.js server and a MySQL database.
 
-##Getting Started
+## Getting Started
 
 1. Clone/Download the repository
 2. Open terminal in the project folder
@@ -33,7 +34,7 @@ Easy Pharmacy Management System running on Node.js + Express.js server and a MyS
 23. Now, login using 'admin' username and the password that you used to create this user.
 24. The project is up and running!
 
-##Some notes
+## Some notes
 
 - This project is not meant for production
 - After each restart of the server, you need to login as the session is destroyed.
